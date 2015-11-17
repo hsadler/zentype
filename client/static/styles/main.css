@@ -1,0 +1,19 @@
+/*MAIN CSS*/
+
+/*for testing*/
+* {
+  /*border: 1px dotted green;*/
+}
+
+/*app styles*/
+.app-container {
+  margin-top: 200px;
+}
+
+#message-input {
+  width: 300px;
+}
+
+#response-output {
+  margin-top: 20px;
+}

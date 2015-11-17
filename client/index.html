@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+
+    <meta charset="UTF-8" />
+
+    <title>ZenType</title>
+
+    <!-- favicon image, if exists -->
+    <link rel="icon" type="image/png" href="/assets/favicon.png">
+
+    <!-- jQuery -->
+    <script src="/scripts/jquery.js"></script>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/styles/bootstrap.css">
+    <script src="/scripts/bootstrap.js"></script>
+
+    <!-- our custom css -->
+    <link rel="stylesheet" href="/styles/main.css">
+
+  </head>
+
+  <body>
+
+    <div class="row">
+      <div class="app-container col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+
+        <h1>ZenType</h1>
+        <p>Daily exercises to become a better typist.</p>
+
+      </div>
+    </div>
+
+    <!-- script to send a message to the server -->
+    <script>
+
+      var sendMessage = function(message) {
+        $.ajax({
+          url: 'api/user/sampleEndpoint?message=' + message,
+          type: 'GET',
+          dataType: 'text',
+          success: function(data) {
+            $('#response-output').html(data);
+          },
+          error: function(xhr, status, errorThrown) {
+            throw new Error('Error in message send. Error information: ' + xhr + ' ' + status + ' ' + errorThrown);
+          }
+        });
+      };
+
+      $('#message-submit-button').on('click', function() {
+        var message = $('#message-input').val();
+        sendMessage(message);
+      });
+
+    </script>
+
+  </body>
+
+</html>

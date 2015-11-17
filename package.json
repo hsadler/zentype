@@ -1,0 +1,19 @@
+{
+  "name": "ZenType",
+  "version": "1.0.0",
+  "description": "Daily exercises to become a better typist",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.0.5",
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3",
+    "path": "^0.12.7",
+    "underscore": "^1.8.3"
+  }
+}
