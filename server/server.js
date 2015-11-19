@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded());
 require('./routes/routes')(app, express);
 
 var port = process.env.PORT || 8080;
-var node_env = process.env.NODE_ENV;
+var node_env = process.env.NODE_ENV || 'development';
 
 
 app.use(express.static(__dirname + '/../client/static'));

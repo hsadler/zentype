@@ -1,0 +1,27 @@
+{
+  "name": "ZenType",
+  "description": "Daily exercises to become a better typist",
+  "authors": [
+    "Harry Sadler <harrypatricksadler@gmail.com>"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "underscore": "~1.8.3",
+    "angular": "~1.4.7",
+    "angular-bootstrap": "~0.14.3",
+    "bootstrap": "~3.3.5",
+    "angular-route": "~1.4.7",
+    "angular-resource": "~1.4.7",
+    "angular-animate": "~1.4.7"
+  }
+}

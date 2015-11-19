@@ -2,9 +2,9 @@
   "name": "ZenType",
   "version": "1.0.0",
   "description": "Daily exercises to become a better typist",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server/server.js"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +14,7 @@
     "body-parser": "^1.14.1",
     "express": "^4.13.3",
     "path": "^0.12.7",
+    "request-promise": "^1.0.2",
     "underscore": "^1.8.3"
   }
 }
