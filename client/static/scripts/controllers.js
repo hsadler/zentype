@@ -4,9 +4,15 @@
 var zentypeControllers = angular.module('zentypeControllers', []);
 
 
-zentypeControllers.controller('HomeCtrl', ['$scope',
-  function($scope) {
-    // nothing for now
+zentypeControllers.controller('HomeCtrl', ['$scope', '$http',
+  function($scope, $http) {
+
+    // ping the Popular Words API service to get it running
+    $http.get('/api/ping-words-service')
+      .success(function(data) {
+        console.log(data);
+      });
+
   }]);
 
 zentypeControllers.controller('SpeedtestCtrl', ['$scope', '$http',

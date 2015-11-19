@@ -5,6 +5,26 @@
   /*border: 1px dotted green;*/
 }
 
+
+/*css fix for ui.bootstrap*/
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+/*css fix for bootstrap & ui.bootstrap nav collapse*/
+div.navbar-collapse.collapse {
+  display: block;
+  overflow: hidden;
+  max-height: 0px;
+  -webkit-transition: max-height .3s ease;
+  -moz-transition: max-height .3s ease;
+  -o-transition: max-height .3s ease;
+  transition: max-height .3s ease;
+}
+div.navbar-collapse.collapse.in {
+  max-height: 2000px;
+}
+
+
+
 /*app styles*/
 .app-container {
   margin-top: 100px;
@@ -17,7 +37,7 @@
 
 /*homepage styles*/
 .homepage-title {
-  font-size: 70px;
+  /*font-size: 70px;*/
 }
 
 /*speedtest styles*/

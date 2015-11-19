@@ -3,6 +3,7 @@
 
 var zentypeApp = angular.module('zentypeApp', [
   'ngRoute',
+  'ui.bootstrap',
   'zentypeControllers'
   // 'zentypeFilters',
   // 'zentypeServices'

@@ -5,8 +5,9 @@
   <title>ZenType</title>
   <!-- favicon image, if exists -->
   <link rel="icon" type="image/png" href="/assets/favicon.png">
-  <!-- Bootstrap -->
+  <!-- Bootstrap & theme -->
   <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/styles/bootstrap-theme.min.css">
   <!-- custom css -->
   <link rel="stylesheet" href="/styles/main.css">
   <!-- Angular & modules -->
@@ -23,18 +24,36 @@
 <body ng-app="zentypeApp">
 
   <!-- NAVIGATION -->
-  <nav class="navbar navbar-default navbar-fixed-top main-nav">
-    <div class="container-fluid col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
-      <a class="navbar-brand" href="#/">ZenType</a>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#/speedtest">Typing Test</a></li>
-        <li><a href="#/user">Account</a></li>
-      </ul>
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+
+      <div class="navbar-header">
+        <button type="button"
+          class="navbar-toggle"
+          ng-init="navCollapsed = true"
+          ng-click="navCollapsed = !navCollapsed">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#/">ZenType</a>
+      </div>
+
+      <div class="collapse navbar-collapse"
+        ng-class="!navCollapsed && 'in'"
+        ng-click="navCollapsed = true">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#/speedtest">Typing Test</a></li>
+          <li><a href="#/user">Account</a></li>
+        </ul>
+      </div>
+
     </div>
   </nav>
 
   <!-- APP -->
-  <div class="app-container col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+  <div class="app-container col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
     <div ng-view></div>
   </div>
 
