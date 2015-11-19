@@ -4,14 +4,11 @@
 var zentypeControllers = angular.module('zentypeControllers', []);
 
 
-zentypeControllers.controller('HomeCtrl', ['$scope', '$http',
-  function($scope, $http) {
+zentypeControllers.controller('HomeCtrl', ['$scope', '$http', 'WordApi',
+  function($scope, $http, WordApi) {
 
     // ping the Popular Words API service to get it running
-    $http.get('/api/ping-words-service')
-      .success(function(data) {
-        console.log(data);
-      });
+    WordApi.ping();
 
   }]);
 
@@ -27,8 +24,11 @@ zentypeControllers.controller('SpeedtestCtrl', ['$scope', '$http',
 
   }]);
 
-zentypeControllers.controller('UserDetailCtrl', ['$scope',
-  function($scope) {
+zentypeControllers.controller('UserDetailCtrl', ['$scope', 'WordApi',
+  function($scope, WordApi) {
+
+    // ping the Popular Words API service to get it running
+    WordApi.ping();
 
     $scope.user = {
       name: 'Harry',

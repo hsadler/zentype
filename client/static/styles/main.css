@@ -41,11 +41,7 @@ div.navbar-collapse.collapse.in {
 }
 
 /*speedtest styles*/
-ul .speedtest-wordlist {
-  list-style-type: none;
-}
-
-li .speedtest-word {
-  display: inline-block;
+span.speedtest-word {
+  font-size: 40px;
 }
 
