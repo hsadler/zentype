@@ -35,13 +35,25 @@ div.navbar-collapse.collapse.in {
   font-size: 22px;
 }
 
-/*homepage styles*/
-.homepage-title {
-  /*font-size: 70px;*/
-}
-
 /*speedtest styles*/
 span.speedtest-word {
-  font-size: 40px;
+  font-size: 35px;
 }
+span.speedtest-word.selected {
+  color: orange;
+}
+span.speedtest-word.incorrect {
+  color: red;
+}
+input#speedtest-type-field {
+  font-size: 35px;
+  height: 70px;
+}
+
+
+
+
+
+
+
 

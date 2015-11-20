@@ -3,10 +3,10 @@ var zentypeServices = angular.module('zentypeServices', []);
 zentypeServices.factory('WordApi', ['$http',
   function($http){
     return {
-      ping: function() {
+      ping: function(callback) {
         $http.get('/api/wordservice/ping')
           .success(function(data) {
-            console.log(data);
+            callback(data);
           });
       }
     }

@@ -1,4 +1,18 @@
 
-<div class="speedtest-word-container well well-lg">
-  <span ng-repeat="word in wordSet track by $index" class="speedtest-word">{{word}} </span>
+<div class="speedtest-word-container well well-lg" ng-show="wordSet.length > 0">
+  <span ng-repeat="word in wordSet track by $index"
+    class="speedtest-word"
+    ng-class="{ 'selected': $index === wordSetIndex, 'incorrect': wordSet[$index].correct === false }">
+    {{word.word}}&nbsp;
+  </span>
+</div>
+
+<div class="form-group" ng-show="wordSet.length > 0">
+  <label class="control-label" for="speedtest-type-field">Type text here:</label>
+  <input class="form-control input-lg"
+    id="speedtest-type-field"
+    type="text"
+    ng-model="currText"
+    ng-keypress="checkUserType($event)"
+    autofocus>
 </div>
