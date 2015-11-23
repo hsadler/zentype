@@ -1,4 +1,7 @@
+
+// Services
 var zentypeServices = angular.module('zentypeServices', []);
+
 
 zentypeServices.factory('WordApi', ['$http',
   function($http){
