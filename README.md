@@ -1,10 +1,10 @@
 # ZenType
 
-> Daily exercises to become a better typist
+> Exercises to become a better typist
 
 ## Summary
 
-Will have typing speed tests, common words tests, etc.
+Will have typing speed tests, common words tests, etc. This is a work in progress. The basic WPM speedtest is a temporary version.
 
 ## Requirements
 

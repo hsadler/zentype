@@ -47,6 +47,11 @@ zentypeDirectives.directive('ztSpeedtest', [
     };
   }]);
 
+
+
+//-----------------------------TESTING BELOW------------------------------//
+
+
 // test directives (for learning)
 zentypeDirectives.directive('helloWorld', [
   function() {
