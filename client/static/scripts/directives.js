@@ -3,10 +3,11 @@
 var zentypeDirectives = angular.module('zentypeDirectives', []);
 
 
+// autofocus when passed expression evals true
 zentypeDirectives.directive('autoFocus', [ '$timeout',
   function($timeout) {
     return {
-      restrict: 'AC',
+      restrict: 'A',
       link: function(scope, elem, attrs) {
         scope.$watch(attrs.autoFocus, function(newVal, oldVal) {
           if(newVal === true) {
@@ -19,6 +20,32 @@ zentypeDirectives.directive('autoFocus', [ '$timeout',
     };
   }]);
 
+// prevent tabs when inside speedtest input field
+zentypeDirectives.directive('preventTab', [
+  function() {
+    return {
+      restrict: 'A',
+      link: function(scope, elem, attrs) {
+        elem.bind('keydown', function(e) {
+          var keycode = e.which;
+          if(keycode === 9) {
+            e.preventDefault();
+          }
+        });
+      }
+    };
+  }]);
+
+// speedtest component directive
+zentypeDirectives.directive('ztSpeedtest', [
+  function() {
+    return {
+      scope: {}, //own scope
+      restrict: 'E', //only element
+      replace: true
+      // templateUrl: url
+    };
+  }]);
 
 // test directives (for learning)
 zentypeDirectives.directive('helloWorld', [

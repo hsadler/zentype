@@ -37,7 +37,7 @@ div.navbar-collapse.collapse.in {
 
 /*speedtest styles*/
 span.speedtest-word {
-  font-size: 35px;
+  font-size: 32px;
 }
 span.speedtest-word.selected {
   color: orange;
@@ -45,9 +45,18 @@ span.speedtest-word.selected {
 span.speedtest-word.incorrect {
   color: red;
 }
-input#speedtest-type-field {
-  font-size: 35px;
+input#speedtest-type-field, div.speedtest-timer-container {
+  font-size: 32px;
   height: 60px;
+}
+div.speedtest-timer-container {
+  padding-top: 0;
+  padding-left: 0;
+}
+span#speedtest-timer {
+  position: relative;
+  top: 6px;
+  left: 12px;
 }
 
 

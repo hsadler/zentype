@@ -21,6 +21,10 @@ zentypeApp.config(['$routeProvider',
         templateUrl: 'partials/speedtest.html',
         controller: 'SpeedtestCtrl'
       }).
+      when('/speedtest-page', {
+        templateUrl: 'partials/speedtest-page.html',
+        controller: 'SpeedtestPageCtrl'
+      }).
       when('/user', {
         templateUrl: 'partials/user-details.html',
         controller: 'UserDetailCtrl'
