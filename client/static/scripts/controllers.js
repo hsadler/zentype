@@ -108,6 +108,7 @@ zentypeControllers.controller('SpeedtestPageCtrl', ['$scope',
     // which are then passed to the ztSpeedtest directive
     // speedtest is completed and score info is passed to this scope
     // score info is then passed to endGamed directive
+    $scope.currLoc = 'startscreen';
   }]);
 
 

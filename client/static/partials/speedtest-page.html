@@ -1,1 +1,17 @@
-<h1>This is the speedtest page</h1>
+
+<!-- directives for speedtest navigation -->
+
+<zt-startscreen
+  curr-loc="currLoc"
+  ng-show="currLoc === 'startscreen'">
+</zt-startscreen>
+
+<zt-loadingscreen
+  curr-loc="currLoc"
+  ng-show="currLoc === 'loadingscreen'">
+</zt-loadingscreen>
+
+<zt-speedtest
+  curr-loc="currLoc"
+  ng-show="currLoc === 'speedtest'">
+</zt-speedtest>
