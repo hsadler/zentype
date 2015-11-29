@@ -1,5 +1,10 @@
 
-<button class="btn btn-default btn-lg"
-  ng-click="nextLoc()">
-    start
-</button>
+<div class="text-center">
+
+  <button class="btn btn-default btn-lg col-md-8 col-md-offset-2"
+    ng-repeat="diff in wordDifficulties"
+    ng-click="nextLoc()">
+      Top {{diff[0]}}&mdash;{{diff[1]}}
+  </button>
+
+</div>

@@ -35,6 +35,12 @@ div.navbar-collapse.collapse.in {
   font-size: 22px;
 }
 
+/*loadingscreen styles*/
+h1.loading-screen-header {
+  margin-top: 80px;
+  font-size: 50px;
+}
+
 /*speedtest styles*/
 span.speedtest-word {
   font-size: 32px;

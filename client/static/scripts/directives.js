@@ -45,7 +45,8 @@ zentypeDirectives.directive('ztStartscreen', [
   function() {
     return {
       scope: { //own scope
-        currLoc: '='
+        currLoc: '=',
+        wordDifficulties: '='
       },
       restrict: 'E', //only element
       replace: true,
@@ -53,10 +54,13 @@ zentypeDirectives.directive('ztStartscreen', [
       link: function(scope, elem, attrs) {},
 
       controller: ['$scope', function($scope) {
+
+        console.log($scope.wordDifficulties);
+
         $scope.nextLoc = function() {
-          console.log($scope);
           $scope.currLoc = 'loadingscreen';
         };
+
       }]
 
     };
@@ -66,17 +70,28 @@ zentypeDirectives.directive('ztLoadingscreen', [
   function() {
     return {
       scope: { //own scope
-        currLoc: '='
+        currLoc: '=',
+        wordSet: '='
       },
       restrict: 'E', //only element
       replace: true,
       templateUrl: '../templates/zt-loadingscreen.html',
-      link: function(scope, elem, attrs) {},
+      link: function(scope, elem, attrs) {
+
+        scope.$watchGroup(['currLoc', 'wordSet'], function(newVal, oldVal) {
+          if(newVal[0] === 'loadingscreen' && newVal[1].length > 0) {
+            scope.nextLoc();
+          }
+        });
+
+      },
 
       controller: ['$scope', function($scope) {
+
         $scope.nextLoc = function() {
           $scope.currLoc = 'speedtest';
         };
+
       }]
 
     };
@@ -87,7 +102,8 @@ zentypeDirectives.directive('ztSpeedtest', [
   function() {
     return { //own scope
       scope: {
-        currLoc: '='
+        currLoc: '=',
+        wordSet: '='
       },
       restrict: 'E', //only element
       replace: true,
@@ -96,6 +112,10 @@ zentypeDirectives.directive('ztSpeedtest', [
 
       controller: ['$scope', '$http', '$interval',
         function($scope, $http, $interval) {
+
+          $scope.nextLoc = function() {
+            $scope.currLoc = 'scorescreen';
+          };
 
           $scope.getWords = function() {
             // fetch 60 random words from the api
