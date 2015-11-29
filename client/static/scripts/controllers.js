@@ -24,7 +24,7 @@ zentypeControllers.controller('SpeedtestPageCtrl', ['$scope',
     $scope.currLoc = 'startscreen';
     $scope.wordSet = [];
     $scope.wordDifficulties = [];
-    for(var i = 50; i <= 1000; i += 50) {
+    for(var i = 50; i <= 500; i += 50) {
       $scope.wordDifficulties.push([i - 49, i]);
     }
   }]);
