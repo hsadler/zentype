@@ -6,7 +6,14 @@ module.exports = {
   getRandomList: function(req, res) {
     console.log('GET request recieved for getRandomList...');
 
-    ReqP('https://popular-words-api.herokuapp.com/api/words/randomlist?size=60&minrank=1&maxrank=100')
+    var minRank = req.query.minrank || 1;
+    var maxRank = req.query.maxrank || 100;
+    var size = req.query.size || 60
+
+    ReqP('https://popular-words-api.herokuapp.com/api/words/randomlist?' +
+        'size=' + size +
+        '&minrank=' + minRank +
+        '&maxrank=' + maxRank)
       .then(function(data) {
         res.json(data);
       })

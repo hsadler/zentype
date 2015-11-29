@@ -11,7 +11,6 @@ zentypeDirectives.directive('autoFocus', [ '$timeout',
       link: function(scope, elem, attrs) {
         scope.$watch(attrs.autoFocus, function(newVal, oldVal) {
           if(newVal === true) {
-            // console.log('autoFocused..');
             $timeout(function() {
               elem[0].focus();
             }, 0);
@@ -46,19 +45,34 @@ zentypeDirectives.directive('ztStartscreen', [
     return {
       scope: { //own scope
         currLoc: '=',
-        wordDifficulties: '='
+        wordDifficulties: '=',
+        wordSet: '='
       },
       restrict: 'E', //only element
       replace: true,
       templateUrl: '../templates/zt-startscreen.html',
       link: function(scope, elem, attrs) {},
 
-      controller: ['$scope', function($scope) {
-
-        console.log($scope.wordDifficulties);
+      controller: ['$scope', '$http' , function($scope, $http) {
 
         $scope.nextLoc = function() {
           $scope.currLoc = 'loadingscreen';
+        };
+
+        $scope.getWords = function(minRank, maxRank) {
+          // fetch 60 random words from the api
+          var url = '/api/speedtest/randomlist?minrank=' + minRank + '&maxrank=' + maxRank;
+          var currWordSet = [];
+          $http.get(url)
+            .success(function(data) {
+              JSON.parse(data).forEach(function(item, index) {
+                currWordSet.push({
+                  word: item,
+                  correct: null
+                });
+              });
+              $scope.wordSet = currWordSet.slice();
+            });
         };
 
       }]
@@ -117,19 +131,6 @@ zentypeDirectives.directive('ztSpeedtest', [
             $scope.currLoc = 'scorescreen';
           };
 
-          $scope.getWords = function() {
-            // fetch 60 random words from the api
-            $http.get('/api/speedtest/randomlist')
-              .success(function(data) {
-                JSON.parse(data).forEach(function(item, index) {
-                  $scope.wordSet.push({
-                    word: item,
-                    correct: null
-                  });
-                });
-              });
-          };
-
           $scope.initSpeedtest = function() {
             $scope.wordSet = [];
             $scope.wordSetIndex = 0;
@@ -145,8 +146,6 @@ zentypeDirectives.directive('ztSpeedtest', [
             };
             $scope.userWpm = null;
             $scope.speedtestComplete = false;
-
-            $scope.getWords();
           };
           $scope.initSpeedtest();
 
