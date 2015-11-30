@@ -21,12 +21,36 @@ zentypeControllers.controller('SpeedtestPageCtrl', ['$scope',
     // which are then passed to the ztSpeedtest directive
     // speedtest is completed and score info is passed to this scope
     // score info is then passed to endGamed directive
+
+    // set initial screen location
     $scope.currLoc = 'startscreen';
+
     $scope.wordSet = [];
     $scope.wordDifficulties = [];
     for(var i = 50; i <= 500; i += 50) {
       $scope.wordDifficulties.push([i - 49, i]);
     }
+
+    // score details needed by multiple directives
+    $scope.initSpeedtest = function() {
+      $scope.testDetails = {
+        wordSet: [],
+        wordSetIndex: 0,
+        currText: '',
+        speedtestTime: 0,
+        timerInterval: null,
+        timerRunning: false,
+        score: {
+          correct: 0,
+          incorrect: 0
+        },
+        userWpm: null,
+        speedtestComplete: false
+      };
+      console.log('speedtest initialized..', $scope.testDetails);
+    };
+    $scope.initSpeedtest();
+
   }]);
 
 

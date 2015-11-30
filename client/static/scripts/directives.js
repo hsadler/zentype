@@ -46,11 +46,13 @@ zentypeDirectives.directive('ztStartscreen', [
       scope: { //own scope
         currLoc: '=',
         wordDifficulties: '=',
-        wordSet: '='
+        testDetails: '=',
+        initSpeedtest: '&'
       },
-      restrict: 'E', //only element
+      restrict: 'E', //can only be an element
       replace: true,
       templateUrl: '../templates/zt-startscreen.html',
+
       link: function(scope, elem, attrs) {},
 
       controller: ['$scope', '$http' , function($scope, $http) {
@@ -60,8 +62,11 @@ zentypeDirectives.directive('ztStartscreen', [
         };
 
         $scope.getWords = function(minRank, maxRank) {
+          // init the speedtest
+          $scope.initSpeedtest();
           // fetch 60 random words from the api
-          var url = '/api/speedtest/randomlist?minrank=' + minRank + '&maxrank=' + maxRank;
+          // temp small wordset
+          var url = '/api/speedtest/randomlist?size=10&minrank=' + minRank + '&maxrank=' + maxRank;
           var currWordSet = [];
           $http.get(url)
             .success(function(data) {
@@ -71,7 +76,7 @@ zentypeDirectives.directive('ztStartscreen', [
                   correct: null
                 });
               });
-              $scope.wordSet = currWordSet.slice();
+              $scope.testDetails.wordSet = currWordSet.slice();
             });
         };
 
@@ -80,19 +85,21 @@ zentypeDirectives.directive('ztStartscreen', [
     };
   }]);
 
+// loadingscreen component directive
 zentypeDirectives.directive('ztLoadingscreen', [
   function() {
     return {
       scope: { //own scope
         currLoc: '=',
-        wordSet: '='
+        testDetails: '='
       },
-      restrict: 'E', //only element
+      restrict: 'E', //can only be an element
       replace: true,
       templateUrl: '../templates/zt-loadingscreen.html',
+
       link: function(scope, elem, attrs) {
 
-        scope.$watchGroup(['currLoc', 'wordSet'], function(newVal, oldVal) {
+        scope.$watchGroup(['currLoc', 'testDetails.wordSet'], function(newVal, oldVal) {
           if(newVal[0] === 'loadingscreen' && newVal[1].length > 0) {
             scope.nextLoc();
           }
@@ -117,85 +124,105 @@ zentypeDirectives.directive('ztSpeedtest', [
     return { //own scope
       scope: {
         currLoc: '=',
-        wordSet: '='
+        testDetails: '='
       },
-      restrict: 'E', //only element
+      restrict: 'E', //can only be an element
       replace: true,
       templateUrl: '../templates/zt-speedtest.html',
-      link: function(scope,  elem, attrs) {},
+
+      link: function(scope,  elem, attrs) {
+
+        scope.$watch('testDetails.speedtestComplete', function(newVal) {
+          if(newVal === true) {
+            scope.nextLoc();
+          }
+        });
+
+      },
 
       controller: ['$scope', '$http', '$interval',
         function($scope, $http, $interval) {
+
+          // save testDetails to quick pointer variable
+          var td = $scope.testDetails;
 
           $scope.nextLoc = function() {
             $scope.currLoc = 'scorescreen';
           };
 
-          $scope.initSpeedtest = function() {
-            $scope.wordSet = [];
-            $scope.wordSetIndex = 0;
-            $scope.currText = '';
-
-            $scope.speedtestTime = 0;
-            $scope.timerInterval;
-            $scope.timerRunning = false;
-
-            $scope.score = {
-              correct: 0,
-              incorrect: 0
-            };
-            $scope.userWpm = null;
-            $scope.speedtestComplete = false;
-          };
-          $scope.initSpeedtest();
-
           $scope.startStopTimer = function() {
-            if(!$scope.timerRunning) {
-              $scope.timerInterval = $interval(function() {
-                $scope.speedtestTime += 1;
+            if(!td.timerRunning) {
+              td.timerInterval = $interval(function() {
+                td.speedtestTime += 1;
               }, 1000);
-              $scope.timerRunning = true;
+              td.timerRunning = true;
             } else {
-              $interval.cancel($scope.timerInterval);
-              $scope.timerRunning = false;
+              $interval.cancel(td.timerInterval);
+              td.timerRunning = false;
             }
           };
 
           $scope.calculateWpm = function() {
-            var wpm = Math.floor($scope.score.correct / ($scope.speedtestTime / 60));
-            $scope.userWpm = wpm > 0 && wpm < 500 ? wpm : null;
+            var wpm = Math.floor(td.score.correct / (td.speedtestTime / 60));
+            td.userWpm = wpm > 0 && wpm < 500 ? wpm : null;
           };
 
           $scope.handleUserType = function(event) {
             // only run the function if the speedtest is not complete
-            if(!$scope.speedtestComplete) {
+            if(!td.speedtestComplete) {
               // if it is the first char entered, start the timer
-              if(!$scope.timerRunning) {
+              if(!td.timerRunning) {
                 $scope.startStopTimer();
               }
               // if the key pressed is a space, evaluate the currText
+              // TODO: update this logic to handle no space on last word
               if(event.charCode === 32) {
-                var text = $scope.currText;
-                if(text === $scope.wordSet[$scope.wordSetIndex].word) {
-                  $scope.wordSet[$scope.wordSetIndex].correct = true;
-                  $scope.score.correct += 1;
+                var text = td.currText;
+                if(text === td.wordSet[td.wordSetIndex].word) {
+                  td.wordSet[td.wordSetIndex].correct = true;
+                  td.score.correct += 1;
                 } else {
-                  $scope.wordSet[$scope.wordSetIndex].correct = false;
-                  $scope.score.incorrect += 1;
+                  td.wordSet[td.wordSetIndex].correct = false;
+                  td.score.incorrect += 1;
                 }
-                $scope.wordSetIndex += 1;
+                td.wordSetIndex += 1;
                 $scope.calculateWpm();
-                if($scope.wordSetIndex === $scope.wordSet.length) {
+                if(td.wordSetIndex === td.wordSet.length) {
                   // stop the speedtest, and calculate the wpm
-                  $interval.cancel($scope.timerInterval);
-                  $scope.speedtestComplete = true
+                  $interval.cancel(td.timerInterval);
+                  td.speedtestComplete = true
                 }
-                $scope.currText = '';
+                td.currText = '';
               }
             }
           };
 
         }] // end ztSpeedtest controller
+
+    };
+  }]);
+
+// scorescreen component directive
+zentypeDirectives.directive('ztScorescreen', [
+  function() {
+    return {
+      scope: { //own scope
+        currLoc: '=',
+        testDetails: '='
+      },
+      restrict: 'E', //can only be an element
+      replace: true,
+      templateUrl: '../templates/zt-scorescreen.html',
+
+      link: function(scope, elem, attrs) {},
+
+      controller: ['$scope', function($scope) {
+
+        $scope.nextLoc = function() {
+          $scope.currLoc = 'startscreen';
+        };
+
+      }]
 
     };
   }]);

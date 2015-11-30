@@ -5,17 +5,26 @@
   curr-loc="currLoc"
   word-difficulties="wordDifficulties"
   word-set="wordSet"
+  test-details="testDetails"
+  init-speedtest="initSpeedtest"
   ng-show="currLoc === 'startscreen'">
 </zt-startscreen>
 
 <zt-loadingscreen
   curr-loc="currLoc"
-  word-set="wordSet"
+  test-details="testDetails"
   ng-show="currLoc === 'loadingscreen'">
 </zt-loadingscreen>
 
 <zt-speedtest
   curr-loc="currLoc"
   word-set='wordSet'
+  test-details="testDetails"
   ng-show="currLoc === 'speedtest'">
 </zt-speedtest>
+
+<zt-scorescreen
+  curr-loc="currLoc"
+  test-details="testDetails"
+  ng-show="currLoc === 'scorescreen'">
+</zt-scorescreen>

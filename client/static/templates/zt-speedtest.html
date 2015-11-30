@@ -1,11 +1,11 @@
 
 <div>
 
-  <div ng-show="wordSet.length > 0">
+  <div ng-show="testDetails.wordSet.length > 0">
     <div class="speedtest-word-container well well-lg">
-      <span ng-repeat="word in wordSet track by $index"
+      <span ng-repeat="word in testDetails.wordSet track by $index"
         class="speedtest-word"
-        ng-class="{ 'selected': $index === wordSetIndex, 'incorrect': wordSet[$index].correct === false }">
+        ng-class="{ 'selected': $index === testDetails.wordSetIndex, 'incorrect': testDetails.wordSet[$index].correct === false }">
         {{word.word}}&nbsp;
       </span>
     </div>
@@ -16,24 +16,24 @@
         <input class="form-control input-lg"
           id="speedtest-type-field"
           type="text"
-          ng-model="currText"
+          ng-model="testDetails.currText"
           prevent-tab
           ng-keypress="handleUserType($event)"
-          auto-focus="wordSet.length > 0 && currLoc === 'speedtest'">
+          auto-focus="testDetails.wordSet.length > 0 && currLoc === 'speedtest'">
       </div>
 
       <div class="form-group col-md-2">
         <label class="control-label" for="speedtest-type-field">Timer:</label>
         <div class="speedtest-timer-container well">
-          <span id="speedtest-timer">{{speedtestTime * 1000 | date:'mm:ss'}}</span>
+          <span id="speedtest-timer" ng-bind="testDetails.speedtestTime * 1000 | date:'mm:ss'"></span>
         </div>
       </div>
     </div>
 
     <div class="progress">
       <div class="progress-bar progress-bar-success"
-        style="width: {{userWpm / 200 * 100}}%"
-        ng-bind="userWpm ? userWpm + 'wpm' : ''">
+        style="width: {{testDetails.userWpm / 200 * 100}}%"
+        ng-bind="testDetails.userWpm ? testDetails.userWpm + 'wpm' : ''">
       </div>
     </div>
   </div>
