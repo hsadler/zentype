@@ -64,6 +64,15 @@ span#speedtest-timer {
   top: 6px;
   left: 12px;
 }
+h1.scorescreen-header {
+  margin-top: 0;
+  margin-bottom: 28px;
+}
+div.scorescreen-container span {
+  font-size: 18px;
+  margin-left: 6px;
+  margin-right: 6px
+}
 
 
 

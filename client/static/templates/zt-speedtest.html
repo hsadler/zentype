@@ -18,7 +18,8 @@
           type="text"
           ng-model="testDetails.currText"
           prevent-tab
-          ng-keypress="handleUserType($event)"
+          ng-keyup="handleUserType($event)"
+          ng-trim="false"
           auto-focus="testDetails.wordSet.length > 0 && currLoc === 'speedtest'">
       </div>
 

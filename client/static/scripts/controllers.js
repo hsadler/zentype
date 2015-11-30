@@ -32,24 +32,22 @@ zentypeControllers.controller('SpeedtestPageCtrl', ['$scope',
     }
 
     // score details needed by multiple directives
+    $scope.testDetails = {};
+
     $scope.initSpeedtest = function() {
-      $scope.testDetails = {
-        wordSet: [],
-        wordSetIndex: 0,
-        currText: '',
-        speedtestTime: 0,
-        timerInterval: null,
-        timerRunning: false,
-        score: {
-          correct: 0,
-          incorrect: 0
-        },
-        userWpm: null,
-        speedtestComplete: false
+      $scope.testDetails.wordSet = [];
+      $scope.testDetails.wordSetIndex = 0;
+      $scope.testDetails.currText = '';
+      $scope.testDetails.speedtestTime = 0;
+      $scope.testDetails.timerInterval = null;
+      $scope.testDetails.timerRunning = false;
+      $scope.testDetails.score = {
+        correct: 0,
+        incorrect: 0
       };
-      console.log('speedtest initialized..', $scope.testDetails);
+      $scope.testDetails.userWpm = null;
+      $scope.testDetails.speedtestComplete = false;
     };
-    $scope.initSpeedtest();
 
   }]);
 

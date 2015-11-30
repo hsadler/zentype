@@ -1,1 +1,19 @@
-- add scorescreen to speedtest
+XXX add scorescreen to speedtest
+- add MongoDB
+- add user schema
+- add user auth
+- add user stats tracking
+
+- add overall user stats
+  - number of tests
+  - total words typed
+  - overall accuracy
+  - overall wpm
+  - etc.
+
+- add more robust stats for speedtest:
+  - keystrokes
+  - accuracy
+  - trouble words
+  - trouble letters
+

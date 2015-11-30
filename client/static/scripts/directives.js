@@ -174,10 +174,19 @@ zentypeDirectives.directive('ztSpeedtest', [
               if(!td.timerRunning) {
                 $scope.startStopTimer();
               }
-              // if the key pressed is a space, evaluate the currText
-              // TODO: update this logic to handle no space on last word
-              if(event.charCode === 32) {
-                var text = td.currText;
+
+              // if last letter of last word is correct, stop the test and calc results
+              if(td.wordSetIndex === td.wordSet.length - 1 && td.currText === td.wordSet[td.wordSet.length - 1].word) {
+                $interval.cancel(td.timerInterval);
+                td.wordSet[td.wordSetIndex].correct = true;
+                td.score.correct += 1;
+                td.speedtestComplete = true;
+                td.currText = '';
+              }
+
+              // else if the key pressed is a space, evaluate the currText
+              else if(event.keyCode === 32) {
+                var text = td.currText.trim();
                 if(text === td.wordSet[td.wordSetIndex].word) {
                   td.wordSet[td.wordSetIndex].correct = true;
                   td.score.correct += 1;
@@ -190,7 +199,7 @@ zentypeDirectives.directive('ztSpeedtest', [
                 if(td.wordSetIndex === td.wordSet.length) {
                   // stop the speedtest, and calculate the wpm
                   $interval.cancel(td.timerInterval);
-                  td.speedtestComplete = true
+                  td.speedtestComplete = true;
                 }
                 td.currText = '';
               }
