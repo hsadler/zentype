@@ -9,48 +9,34 @@
       <tbody>
         <tr>
           <td>
-            <span>Words per minute</span>
+            <span>Typing speed</span>
           </td>
           <td class="text-right">
-            <span>
-              {{testDetails.userWpm || 0}}
-            </span>
+            <span ng-bind="testDetails.userWpm + 'wpm' || 0 + 'wpm'"></span>
           </td>
         </tr>
         <tr>
           <td>
-            <span>
-              Time completed
-            </span>
+            <span>Time completed</span>
           </td>
           <td class="text-right">
-            <span>
-              {{testDetails.speedtestTime}}
-            </span>
+            <span ng-bind="testDetails.speedtestTime * 1000 | date:'mm:ss'"></span>
           </td>
         </tr>
         <tr>
           <td>
-            <span>
-            Correct words
-            </span>
+            <span>Correct words</span>
           </td>
           <td class="text-right">
-            <span>
-              {{testDetails.score.correct}}
-            </span>
+            <span ng-bind="testDetails.score.correct"></span>
           </td>
         </tr>
         <tr>
           <td>
-            <span>
-              Incorrect words
-            </span>
+            <span>Incorrect words</span>
           </td>
           <td class="text-right">
-            <span>
-              {{testDetails.score.incorrect}}
-            </span>
+            <span ng-bind="testDetails.score.incorrect"></span>
           </td>
         </tr>
       </tbody>
