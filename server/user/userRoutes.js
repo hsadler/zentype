@@ -1,5 +1,6 @@
 var UserController = require('./userController');
 
 module.exports = function(route) {
-  route.get('/sampleEndpoint', UserController.sampleEndpoint);
+  route.get('/create-user', UserController.createTestUser);
+  route.get('/get-user', UserController.getTestUser);
 };

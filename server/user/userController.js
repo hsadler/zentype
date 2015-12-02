@@ -1,12 +1,44 @@
 
+var User = require('./userModel.js');
+
 
 module.exports = {
 
-  // this is a sample GET endpoint
-  sampleEndpoint: function(req, res) {
-    console.log('GET request recieved for sampleEndpoint...');
-    console.log('query string message: ' + req.query.message);
-    res.send('message received.. sending your message back: ' + req.query.message);
+  // create a test user
+  createTestUser: function(req, res) {
+    var username = req.query.username;
+    var level = req.query.level;
+
+    console.log("GET recieved for createTestUser with query: ", username, level);
+
+    //add a test user to DB
+    var testUser = new User({
+      username: username,
+      level: level
+    })
+    .save()
+    .then(function(data) {
+      res.json(data);
+    }, function(err) {
+      res.json(err);
+    });
+  },
+
+  // test for GET user info
+  getTestUser: function(req, res) {
+    var username = req.query.username;
+
+    console.log('GET test for user info with query: ', username);
+
+    User.findOne({
+      username: username
+    })
+    .exec()
+    .then(function(data) {
+      res.json(data);
+    }, function(err) {
+      res.json(err);
+    });
   }
 
 };

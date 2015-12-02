@@ -11,6 +11,8 @@
   "license": "ISC",
   "private": true,
   "dependencies": {
+    "bcrypt": "^0.8.5",
+    "bluebird": "^3.0.6",
     "body-parser": "^1.14.1",
     "express": "^4.13.3",
     "kerberos": "0.0.17",

@@ -1,5 +1,5 @@
 XXX add scorescreen to speedtest
-- add MongoDB
+X add MongoDB (may not need bluebird for what we are doing with user data and MongoDB)
 - add user schema
 - add user auth
 - add user stats tracking
