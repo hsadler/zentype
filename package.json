@@ -9,10 +9,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "private": true,
   "dependencies": {
     "bluebird": "^3.0.5",
     "body-parser": "^1.14.1",
     "express": "^4.13.3",
+    "mongoose": "^3.8.37",
     "path": "^0.12.7",
     "request-promise": "^1.0.2",
     "underscore": "^1.8.3"
