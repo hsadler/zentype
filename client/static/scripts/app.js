@@ -1,6 +1,5 @@
 
 // App Module
-
 var zentypeApp = angular.module('zentypeApp', [
   'ngRoute',
   'ui.bootstrap',

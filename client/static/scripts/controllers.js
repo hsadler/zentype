@@ -65,14 +65,39 @@ zentypeControllers.controller('SpeedtestPageCtrl', ['$scope',
 zentypeControllers.controller('UserSignupCtrl', ['$scope', 'AuthService',
   function($scope, AuthService) {
 
+    $scope.username = '';
+    $scope.password = '';
+    $scope.confirmPassword = '';
+
+    $scope.submitIsClickable = function() {
+      return $scope.username.length > 0
+        && $scope.password.length > 0
+        && $scope.password === $scope.confirmPassword;
+    };
+
+    // this will have to be changed to asynch
+    $scope.submitLogin = function() {
+      AuthService.login($scope.username, $scope.password);
+      if(AuthService.auth) {
+        $location.path('/user');
+      }
+    };
+
   }]);
 
 
 zentypeControllers.controller('UserLoginCtrl', ['$scope', '$location', 'AuthService',
   function($scope, $location, AuthService) {
 
+    $scope.username = '';
+    $scope.password = '';
+
+    $scope.submitIsClickable = function() {
+      return $scope.username.length > 0 && $scope.password.length > 0;
+    };
+
     // this will have to be changed to asynch
-    $scope.submitAuth = function() {
+    $scope.submitLogin = function() {
       AuthService.login($scope.username, $scope.password);
       if(AuthService.auth) {
         $location.path('/user');
