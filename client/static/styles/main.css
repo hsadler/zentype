@@ -74,6 +74,10 @@ div.scorescreen-container span {
   margin-right: 6px
 }
 
+/*login styles*/
+p.login-signup-ask {
+  margin-bottom: 0;
+}
 
 
 

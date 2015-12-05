@@ -12,20 +12,28 @@ var zentypeApp = angular.module('zentypeApp', [
 
 zentypeApp.config(['$routeProvider',
   function($routeProvider) {
-    $routeProvider.
-      when('/', {
+    $routeProvider
+      .when('/', {
         templateUrl: 'partials/home.html',
         controller: 'HomeCtrl'
-      }).
-      when('/speedtest', {
+      })
+      .when('/speedtest', {
         templateUrl: 'partials/speedtest-page.html',
         controller: 'SpeedtestPageCtrl'
-      }).
-      when('/user', {
+      })
+      .when('/user', {
         templateUrl: 'partials/user-details.html',
         controller: 'UserDetailCtrl'
-      }).
-      otherwise({
+      })
+      .when('/signup', {
+        templateUrl: 'partials/user-signup.html',
+        controller: 'UserSignupCtrl'
+      })
+      .when('/login', {
+        templateUrl: 'partials/user-login.html',
+        controller: 'UserLoginCtrl'
+      })
+      .otherwise({
         redirectTo: '/'
       });
   }]);

@@ -3,17 +3,23 @@
 var zentypeControllers = angular.module('zentypeControllers', []);
 
 
-zentypeControllers.controller('HomeCtrl', ['$scope', '$http', 'WordApi',
-  function($scope, $http, WordApi) {
+zentypeControllers.controller('MainCtrl', ['$scope', 'WordApiService',
+  function($scope, WordApiService) {
 
     // ping the Popular Words API service to get it running
-    WordApi.ping(function(data) {
+    WordApiService.ping(function(data) {
       console.log(data);
     });
 
   }]);
 
-// main controller for modular version of speedtest page
+
+zentypeControllers.controller('HomeCtrl', ['$scope', '$http', 'WordApiService',
+  function($scope, $http, WordApiService) {
+
+  }]);
+
+
 zentypeControllers.controller('SpeedtestPageCtrl', ['$scope',
   function($scope) {
     // logic for displaying templates based on state here
@@ -52,17 +58,26 @@ zentypeControllers.controller('SpeedtestPageCtrl', ['$scope',
   }]);
 
 
-zentypeControllers.controller('UserDetailCtrl', ['$scope', 'WordApi',
-  function($scope, WordApi) {
-
-    // ping the Popular Words API service to get it running
-    WordApi.ping(function(data) {
-      console.log(data);
-    });
+zentypeControllers.controller('UserDetailCtrl', ['$scope', 'WordApiService',
+  function($scope, WordApiService) {
 
     $scope.user = {
       name: 'Harry',
       level: '1'
     };
+
+  }]);
+
+
+zentypeControllers.controller('UserSignupCtrl', ['$scope', 'AuthService',
+  function($scope, AuthService) {
+
+  }]);
+
+
+zentypeControllers.controller('UserLoginCtrl', ['$scope',
+  function($scope) {
+
+    console.log('UserLoginCtrl is online...');
 
   }]);
