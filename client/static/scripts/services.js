@@ -19,22 +19,16 @@ zentypeServices.factory('WordApiService', ['$http',
 zentypeServices.factory('AuthService', ['$http', '$q', '$window',
   function($http, $q, $window){
 
-    var userInfo = {
-      username: null,
-      password: null
-    };
-
     return {
-
+      auth: false,
       login: function(username, password) {
-        userInfo.username = username;
-        userInfo.password = password;
+        if(username && password) {
+          this.auth = true;
+        }
       },
-
-      isAuthenticated: function() {
-        return userInfo.username && username.password;
+      logout: function() {
+        this.auth = false;
       }
-
     };
 
   }]);

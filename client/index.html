@@ -47,9 +47,8 @@
         ng-click="navCollapsed = true">
         <ul class="nav navbar-nav navbar-right">
           <li><a href="#/speedtest">Typing Test</a></li>
-          <li><a href="#/user">Account</a></li>
-          <li><a href="#/signup">Sign Up</a></li>
-          <li><a href="#/login">Log In</a></li>
+          <li ng-show="auth"><a href="#/user">Account</a></li>
+          <li ng-show="!auth"><a href="#/login">Log In</a></li>
         </ul>
       </div>
 

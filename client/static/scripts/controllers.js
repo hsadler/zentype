@@ -3,8 +3,12 @@
 var zentypeControllers = angular.module('zentypeControllers', []);
 
 
-zentypeControllers.controller('MainCtrl', ['$scope', 'WordApiService',
-  function($scope, WordApiService) {
+zentypeControllers.controller('MainCtrl', ['$scope', 'WordApiService', 'AuthService',
+  function($scope, WordApiService, AuthService) {
+
+    $scope.$watch(function() { return AuthService.auth; }, function(newVal) {
+      $scope.auth = newVal;
+    });
 
     // ping the Popular Words API service to get it running
     WordApiService.ping(function(data) {
@@ -58,26 +62,37 @@ zentypeControllers.controller('SpeedtestPageCtrl', ['$scope',
   }]);
 
 
-zentypeControllers.controller('UserDetailCtrl', ['$scope', 'WordApiService',
-  function($scope, WordApiService) {
-
-    $scope.user = {
-      name: 'Harry',
-      level: '1'
-    };
-
-  }]);
-
-
 zentypeControllers.controller('UserSignupCtrl', ['$scope', 'AuthService',
   function($scope, AuthService) {
 
   }]);
 
 
-zentypeControllers.controller('UserLoginCtrl', ['$scope',
-  function($scope) {
+zentypeControllers.controller('UserLoginCtrl', ['$scope', '$location', 'AuthService',
+  function($scope, $location, AuthService) {
 
-    console.log('UserLoginCtrl is online...');
+    // this will have to be changed to asynch
+    $scope.submitAuth = function() {
+      AuthService.login($scope.username, $scope.password);
+      if(AuthService.auth) {
+        $location.path('/user');
+      }
+    };
+
+  }]);
+
+
+zentypeControllers.controller('UserDetailCtrl', ['$scope', '$location', 'AuthService',
+  function($scope, $location, AuthService) {
+
+    $scope.handleLogout = function() {
+      AuthService.logout();
+      $location.path('/login');
+    };
+
+    $scope.user = {
+      name: 'Harry',
+      level: '1'
+    };
 
   }]);
