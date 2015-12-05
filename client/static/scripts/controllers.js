@@ -62,8 +62,8 @@ zentypeControllers.controller('SpeedtestPageCtrl', ['$scope',
   }]);
 
 
-zentypeControllers.controller('UserSignupCtrl', ['$scope', 'AuthService',
-  function($scope, AuthService) {
+zentypeControllers.controller('UserSignupCtrl', ['$scope', '$location', 'AuthService',
+  function($scope, $location, AuthService) {
 
     $scope.username = '';
     $scope.password = '';
@@ -76,8 +76,8 @@ zentypeControllers.controller('UserSignupCtrl', ['$scope', 'AuthService',
     };
 
     // this will have to be changed to asynch
-    $scope.submitLogin = function() {
-      AuthService.login($scope.username, $scope.password);
+    $scope.submitSignup = function() {
+      AuthService.signup($scope.username, $scope.password);
       if(AuthService.auth) {
         $location.path('/user');
       }

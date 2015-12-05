@@ -4,7 +4,8 @@ X add user schema
 
 
 add user auth
-  - create login pages (signup and signin)
+  X create login pages (signup and signin)
+  - add dummy login and signup for testing
   - add password bcrypt hashing
   - add jwt token auth
   - allow navigation to any user page (ex: GET query username="jim"),

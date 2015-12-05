@@ -21,6 +21,11 @@ zentypeServices.factory('AuthService', ['$http', '$q', '$window',
 
     return {
       auth: false,
+      signup: function(username, password) {
+        if(username && password) {
+          this.auth = true;
+        }
+      },
       login: function(username, password) {
         if(username && password) {
           this.auth = true;
