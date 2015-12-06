@@ -27,7 +27,7 @@ db.once('open', function (callback) {
 
 // serve static files from specified locations and index page on "/"
 app.use(express.static(__dirname + '/../client/static'));
-app.use(express.static(__dirname + '/../client/build'));
+app.use(express.static(__dirname + '/../client/src'));
 app.get('/', function(req, res) {
   res.sendFile(path.resolve(__dirname + '/../client/index.html'));
 });
