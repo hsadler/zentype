@@ -66,18 +66,27 @@ zentypeDirectives.directive('ztStartscreen', [
           $scope.initSpeedtest();
           // fetch 60 random words from the api
           // temp small wordset
-          var url = '/api/speedtest/randomlist?size=10&minrank=' + minRank + '&maxrank=' + maxRank;
           var currWordSet = [];
-          $http.get(url)
-            .success(function(data) {
-              JSON.parse(data).forEach(function(item, index) {
-                currWordSet.push({
-                  word: item,
-                  correct: null
-                });
+          $http({
+            method: 'GET',
+            url: '/api/speedtest/randomlist',
+            params: {
+              size: 10,
+              minrank: minRank,
+              maxrank: maxRank
+            }
+          })
+          .then(function(res) {
+            JSON.parse(res.data).forEach(function(item, index) {
+              currWordSet.push({
+                word: item,
+                correct: null
               });
-              $scope.testDetails.wordSet = currWordSet.slice();
             });
+            $scope.testDetails.wordSet = currWordSet.slice();
+          }, function(err) {
+            console.log('ERROR: ', err);
+          });
         };
 
       }]

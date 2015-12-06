@@ -5,7 +5,8 @@ X add user schema
 
 add user auth
   X create login pages (signup and signin)
-  - add dummy login and signup for testing
+  x add dummy login endpoints and signup for testing
+  X convert authService to async
   - add password bcrypt hashing
   - add jwt token auth
   - allow navigation to any user page (ex: GET query username="jim"),

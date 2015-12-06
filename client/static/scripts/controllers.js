@@ -75,12 +75,16 @@ zentypeControllers.controller('UserSignupCtrl', ['$scope', '$location', 'AuthSer
         && $scope.password === $scope.confirmPassword;
     };
 
-    // this will have to be changed to asynch
     $scope.submitSignup = function() {
-      AuthService.signup($scope.username, $scope.password);
-      if(AuthService.auth) {
-        $location.path('/user');
-      }
+      AuthService.signup($scope.username, $scope.password)
+      .then(function(res) {
+        if(AuthService.auth) {
+          console.log(AuthService.userData);
+          $location.path('/user');
+        }
+      }, function(err) {
+        console.log('ERROR: ', err);
+      });
     };
 
   }]);
@@ -96,12 +100,17 @@ zentypeControllers.controller('UserLoginCtrl', ['$scope', '$location', 'AuthServ
       return $scope.username.length > 0 && $scope.password.length > 0;
     };
 
-    // this will have to be changed to asynch
     $scope.submitLogin = function() {
-      AuthService.login($scope.username, $scope.password);
-      if(AuthService.auth) {
-        $location.path('/user');
-      }
+      AuthService.login($scope.username, $scope.password)
+      .then(function (res) {
+        if(AuthService.auth) {
+          console.log(AuthService.userData);
+          $location.path('/user');
+        }
+      }, function(err) {
+        console.log('ERROR: ', err);
+      });
+
     };
 
   }]);
@@ -110,14 +119,19 @@ zentypeControllers.controller('UserLoginCtrl', ['$scope', '$location', 'AuthServ
 zentypeControllers.controller('UserDetailCtrl', ['$scope', '$location', 'AuthService',
   function($scope, $location, AuthService) {
 
-    $scope.handleLogout = function() {
-      AuthService.logout();
-      $location.path('/login');
+    $scope.user = {
+      username: '',
+      level: null
     };
 
-    $scope.user = {
-      name: 'Harry',
-      level: '1'
+    if(AuthService.userData) {
+      $scope.user = AuthService.userData;
+    }
+
+    $scope.handleLogout = function() {
+      AuthService.logout();
+      console.log(AuthService.userData);
+      $location.path('/login');
     };
 
   }]);
