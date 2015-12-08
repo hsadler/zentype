@@ -20,6 +20,10 @@ zentypeApp.config(['$routeProvider',
         templateUrl: 'partials/speedtest-page.html',
         controller: 'SpeedtestPageCtrl'
       })
+      .when('/dashboard', {
+        templateUrl: 'partials/user-dashboard.html',
+        controller: 'UserDashboardCtrl'
+      })
       .when('/user', {
         templateUrl: 'partials/user-details.html',
         controller: 'UserDetailCtrl'

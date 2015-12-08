@@ -1,6 +1,9 @@
+
 var UserController = require('./userController');
 
+
 module.exports = function(route) {
-  route.post('/create-user', UserController.createTestUser);
-  route.get('/get-user', UserController.getTestUser);
+  route.get('/', UserController.getUser);
+  route.get('/login', UserController.loginUser);
+  route.post('/create', UserController.createUser);
 };

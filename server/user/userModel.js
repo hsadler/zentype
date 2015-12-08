@@ -1,7 +1,7 @@
 
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt');
-var SALT_WORK_FACTOR  = 10;
+var bcrypt = require('bcrypt-nodejs');
+var Promise = require('bluebird');
 
 
 // for characterRecords hash
@@ -20,30 +20,55 @@ var charHash = (function() {
 // schema
 var UserSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
-  hashedPassword: { type: Number },
+  hashed_password: { type: String },
   level: { type: Number, default: 1 },
-  globalRank: { type: Number, default: 0 },
-  userStats: {
-    testRecords:[{
+  global_rank: { type: Number, default: 0 },
+  user_stats: {
+    test_records:[{
       date: { type: Date, default: Date.now },
       wpm: { type: Number, required: true },
-      totalWords: { type: Number, required: true },
-      wordsIncorrect: { type: Number, required: true },
-      totalKeystrokes: { type: Number, required: true },
-      keystrokesIncorrect: { type: Number, required: true }
+      total_words: { type: Number, required: true },
+      words_incorrect: { type: Number, required: true },
+      total_keystrokes: { type: Number, required: true },
+      keystrokes_incorrect: { type: Number, required: true }
     }],
-    characterRecords: charHash,
-    challengeRecords: [{
-      challengeName: { type: String, required: true, unique: true },
-      unlockDate: { type: Date, default: Date.now },
+    // will implement characterRecords later
+    // characterRecords: charHash,
+    challenge_records: [{
+      challenge_name: { type: String, required: true },
+      unlock_date: { type: Date, default: Date.now },
       wpm: { type: Number, required: true },
       accuracy: { type: Number, required: true }
     }]
   },
-  userAchievements: [{
-    achievementName: { type: String, required: true, unique: true },
-    unlockDate: { type: Date, default: Date.now }
+  user_achievements: [{
+    achievement_name: { type: String, required: true },
+    unlock_date: { type: Date, default: Date.now }
   }]
 });
 
+
+// static methods
+// generating a hash
+UserSchema.methods.generateHash = function(password) {
+  var genSalt = Promise.promisify(bcrypt.genSalt);
+  var hash = Promise.promisify(bcrypt.hash);
+
+  return genSalt(10)
+  .then(function(salt) {
+    return hash(password, salt, null);
+  });
+};
+
+// checking if password is valid
+UserSchema.methods.passwordIsValid = function(password) {
+  var compare = Promise.promisify(bcrypt.compare);
+  return compare(password, this.hashed_password);
+};
+
+
 module.exports = mongoose.model('user', UserSchema);
+
+
+
+

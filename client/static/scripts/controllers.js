@@ -80,7 +80,7 @@ zentypeControllers.controller('UserSignupCtrl', ['$scope', '$location', 'AuthSer
       .then(function(res) {
         if(AuthService.auth) {
           console.log(AuthService.userData);
-          $location.path('/user');
+          $location.path('/dashboard');
         }
       }, function(err) {
         console.log('ERROR: ', err);
@@ -105,7 +105,7 @@ zentypeControllers.controller('UserLoginCtrl', ['$scope', '$location', 'AuthServ
       .then(function (res) {
         if(AuthService.auth) {
           console.log(AuthService.userData);
-          $location.path('/user');
+          $location.path('/dashboard');
         }
       }, function(err) {
         console.log('ERROR: ', err);
@@ -116,7 +116,7 @@ zentypeControllers.controller('UserLoginCtrl', ['$scope', '$location', 'AuthServ
   }]);
 
 
-zentypeControllers.controller('UserDetailCtrl', ['$scope', '$location', 'AuthService',
+zentypeControllers.controller('UserDashboardCtrl', ['$scope', '$location', 'AuthService',
   function($scope, $location, AuthService) {
 
     $scope.user = {
@@ -133,5 +133,18 @@ zentypeControllers.controller('UserDetailCtrl', ['$scope', '$location', 'AuthSer
       console.log(AuthService.userData);
       $location.path('/login');
     };
+
+  }]);
+
+
+zentypeControllers.controller('UserDetailCtrl', ['$scope', '$location', 'UserDetailService',
+  function($scope, $location, UserDetailService) {
+
+    UserDetailService.getUser($location.search().username)
+    .then(function(res) {
+      $scope.user = UserDetailService.userData;
+    }, function(err) {
+      console.log('ERROR: ', err);
+    });
 
   }]);
