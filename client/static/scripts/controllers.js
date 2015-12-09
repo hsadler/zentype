@@ -10,6 +10,9 @@ zentypeControllers.controller('MainCtrl', ['$scope', 'WordApiService', 'AuthServ
       $scope.auth = newVal;
     });
 
+    // check the user token when they hit the site
+    AuthService.checkToken();
+
     // ping the Popular Words API service to get it running
     WordApiService.ping(function(data) {
       console.log(data);

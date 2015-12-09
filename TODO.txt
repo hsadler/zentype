@@ -7,10 +7,10 @@ add user auth
   X create login pages (signup and signin)
   x add dummy login endpoints and signup for testing
   X convert authService to async
-  - add password bcrypt hashing
-  - add jwt token auth
-  - allow navigation to any user page (ex: GET query username="jim"),
-    but user can only administrate their own page
+  X add password bcrypt hashing
+  X add jwt token auth (stopped at token endpoint and checkToken on AuthService)
+  X allow navigation to any user page (ex: GET query username="jim"),
+    but user can only administrate their own page (dashboard)
 
 
 - transfer all the speedtest business logic to services

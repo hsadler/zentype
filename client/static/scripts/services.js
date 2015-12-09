@@ -7,10 +7,11 @@ zentypeServices.factory('WordApiService', ['$http',
   function($http){
     return {
       ping: function(callback) {
+        // change this to new get version
         $http.get('/api/wordservice/ping')
-          .success(function(data) {
-            callback(data);
-          });
+        .success(function(data) {
+          callback(data);
+        });
       }
     };
   }]);
@@ -19,12 +20,13 @@ zentypeServices.factory('WordApiService', ['$http',
 zentypeServices.factory('AuthService', ['$http', '$q', '$window',
   function($http, $q, $window){
 
-    var deferred = $q.defer();
-
     return {
+
       auth: false,
       userData: null,
+
       signup: function(username, password) {
+        var deferred = $q.defer();
         var context = this;
         return $http({
           method: 'POST',
@@ -38,6 +40,7 @@ zentypeServices.factory('AuthService', ['$http', '$q', '$window',
           // set the AuthService data to the response
           context.userData = res.data;
           context.auth = true;
+          $window.localStorage['com.ZenType'] = res.data.token;
           // promise is fulfilled
           deferred.resolve(res.data);
           // promise is returned
@@ -49,7 +52,9 @@ zentypeServices.factory('AuthService', ['$http', '$q', '$window',
           return deferred.promise;
         });
       },
+
       login: function(username, password) {
+        var deferred = $q.defer();
         var context = this;
         return $http({
           method: 'GET',
@@ -63,6 +68,7 @@ zentypeServices.factory('AuthService', ['$http', '$q', '$window',
           // set the AuthService data to the response
           context.userData = res.data;
           context.auth = true;
+          $window.localStorage['com.ZenType'] = res.data.token;
           // promise is fulfilled
           deferred.resolve(res.data);
           // promise is returned
@@ -74,10 +80,36 @@ zentypeServices.factory('AuthService', ['$http', '$q', '$window',
           return deferred.promise;
         });
       },
+
       logout: function() {
         this.auth = false;
         this.userData = null;
+        $window.localStorage.removeItem('com.ZenType');
+      },
+
+      checkToken: function() {
+        var context = this;
+        var token = $window.localStorage.getItem('com.ZenType');
+
+        if(token) {
+          return $http({
+            method: 'POST',
+            url: '/api/user/auth-token',
+            data: {
+              token: token
+            }
+          })
+          .then(function (res) {
+            // set the AuthService data to the response
+            context.userData = res.data;
+            context.auth = true;
+            $window.localStorage['com.ZenType'] = res.data.token;
+          }, function (err) {
+            console.log('ERROR: ', err);
+          });
+        }
       }
+
     };
 
   }]);
@@ -101,7 +133,6 @@ zentypeServices.factory('UserDetailService', ['$http', '$q', '$window',
         })
         .then(function (res) {
           // set the AuthService data to the response
-          console.log(res.data);
           context.userData = res.data;
           // promise is fulfilled
           deferred.resolve(res.data);
