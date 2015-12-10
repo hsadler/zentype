@@ -5,7 +5,7 @@ var zentypeDirectives = angular.module('zentypeDirectives', []);
 
 // autofocus when passed expression evals true
 zentypeDirectives.directive('autoFocus', [ '$timeout',
-  function($timeout) {
+  function ($timeout) {
     return {
       restrict: 'A',
       link: function(scope, elem, attrs) {
@@ -22,7 +22,7 @@ zentypeDirectives.directive('autoFocus', [ '$timeout',
 
 // prevent tabs when inside speedtest input field
 zentypeDirectives.directive('preventTab', [
-  function() {
+  function () {
     return {
       restrict: 'A',
       link: function(scope, elem, attrs) {
@@ -41,7 +41,7 @@ zentypeDirectives.directive('preventTab', [
 
 // startscreen component directive
 zentypeDirectives.directive('ztStartscreen', [
-  function() {
+  function () {
     return {
       scope: { //own scope
         currLoc: '=',
@@ -53,15 +53,15 @@ zentypeDirectives.directive('ztStartscreen', [
       replace: true,
       templateUrl: '../templates/zt-startscreen.html',
 
-      link: function(scope, elem, attrs) {},
+      link: function (scope, elem, attrs) {},
 
       controller: ['$scope', '$http' , function($scope, $http) {
 
-        $scope.nextLoc = function() {
+        $scope.nextLoc = function () {
           $scope.currLoc = 'loadingscreen';
         };
 
-        $scope.getWords = function(minRank, maxRank) {
+        $scope.getWords = function (minRank, maxRank) {
           // init the speedtest
           $scope.initSpeedtest();
           // fetch 60 random words from the api
@@ -76,7 +76,7 @@ zentypeDirectives.directive('ztStartscreen', [
               maxrank: maxRank
             }
           })
-          .then(function(res) {
+          .then(function (res) {
             JSON.parse(res.data).forEach(function(item, index) {
               currWordSet.push({
                 word: item,
@@ -84,7 +84,7 @@ zentypeDirectives.directive('ztStartscreen', [
               });
             });
             $scope.testDetails.wordSet = currWordSet.slice();
-          }, function(err) {
+          }, function (err) {
             console.log('ERROR: ', err);
           });
         };

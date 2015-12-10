@@ -4,14 +4,11 @@ var zentypeControllers = angular.module('zentypeControllers', []);
 
 
 zentypeControllers.controller('MainCtrl', ['$scope', 'WordApiService', 'AuthService',
-  function($scope, WordApiService, AuthService) {
+  function ($scope, WordApiService, AuthService) {
 
-    $scope.$watch(function() { return AuthService.auth; }, function(newVal) {
+    $scope.$watch(function () { return AuthService.auth; }, function (newVal) {
       $scope.auth = newVal;
     });
-
-    // check the user token when they hit the site
-    AuthService.checkToken();
 
     // ping the Popular Words API service to get it running
     WordApiService.ping(function(data) {
@@ -22,13 +19,13 @@ zentypeControllers.controller('MainCtrl', ['$scope', 'WordApiService', 'AuthServ
 
 
 zentypeControllers.controller('HomeCtrl', ['$scope', '$http', 'WordApiService',
-  function($scope, $http, WordApiService) {
+  function ($scope, $http, WordApiService) {
 
   }]);
 
 
 zentypeControllers.controller('SpeedtestPageCtrl', ['$scope',
-  function($scope) {
+  function ($scope) {
     // logic for displaying templates based on state here
     // perhaps this is where user selects speedtest parameters,
     // which are then passed to the ztSpeedtest directive
@@ -47,7 +44,7 @@ zentypeControllers.controller('SpeedtestPageCtrl', ['$scope',
     // score details needed by multiple directives
     $scope.testDetails = {};
 
-    $scope.initSpeedtest = function() {
+    $scope.initSpeedtest = function () {
       $scope.testDetails.wordSet = [];
       $scope.testDetails.wordSetIndex = 0;
       $scope.testDetails.currText = '';
@@ -66,7 +63,7 @@ zentypeControllers.controller('SpeedtestPageCtrl', ['$scope',
 
 
 zentypeControllers.controller('UserSignupCtrl', ['$scope', '$location', 'AuthService',
-  function($scope, $location, AuthService) {
+  function ($scope, $location, AuthService) {
 
     $scope.username = '';
     $scope.password = '';
@@ -80,12 +77,11 @@ zentypeControllers.controller('UserSignupCtrl', ['$scope', '$location', 'AuthSer
 
     $scope.submitSignup = function() {
       AuthService.signup($scope.username, $scope.password)
-      .then(function(res) {
+      .then(function (res) {
         if(AuthService.auth) {
-          console.log(AuthService.userData);
           $location.path('/dashboard');
         }
-      }, function(err) {
+      }, function (err) {
         console.log('ERROR: ', err);
       });
     };
@@ -94,7 +90,7 @@ zentypeControllers.controller('UserSignupCtrl', ['$scope', '$location', 'AuthSer
 
 
 zentypeControllers.controller('UserLoginCtrl', ['$scope', '$location', 'AuthService',
-  function($scope, $location, AuthService) {
+  function ($scope, $location, AuthService) {
 
     $scope.username = '';
     $scope.password = '';
@@ -107,20 +103,18 @@ zentypeControllers.controller('UserLoginCtrl', ['$scope', '$location', 'AuthServ
       AuthService.login($scope.username, $scope.password)
       .then(function (res) {
         if(AuthService.auth) {
-          console.log(AuthService.userData);
           $location.path('/dashboard');
         }
-      }, function(err) {
+      }, function (err) {
         console.log('ERROR: ', err);
       });
-
     };
 
   }]);
 
 
 zentypeControllers.controller('UserDashboardCtrl', ['$scope', '$location', 'AuthService',
-  function($scope, $location, AuthService) {
+  function ($scope, $location, AuthService) {
 
     $scope.user = {
       username: '',
@@ -133,7 +127,6 @@ zentypeControllers.controller('UserDashboardCtrl', ['$scope', '$location', 'Auth
 
     $scope.handleLogout = function() {
       AuthService.logout();
-      console.log(AuthService.userData);
       $location.path('/login');
     };
 
@@ -141,12 +134,12 @@ zentypeControllers.controller('UserDashboardCtrl', ['$scope', '$location', 'Auth
 
 
 zentypeControllers.controller('UserDetailCtrl', ['$scope', '$location', 'UserDetailService',
-  function($scope, $location, UserDetailService) {
+  function ($scope, $location, UserDetailService) {
 
     UserDetailService.getUser($location.search().username)
-    .then(function(res) {
+    .then(function (res) {
       $scope.user = UserDetailService.userData;
-    }, function(err) {
+    }, function (err) {
       console.log('ERROR: ', err);
     });
 
