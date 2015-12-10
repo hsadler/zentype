@@ -121,9 +121,9 @@ zentypeControllers.controller('UserDashboardCtrl', ['$scope', '$location', 'Auth
       level: null
     };
 
-    if(AuthService.userData) {
-      $scope.user = AuthService.userData;
-    }
+    $scope.$watch(function () { return AuthService.userData; }, function (newVal) {
+      $scope.user = newVal;
+    });
 
     $scope.handleLogout = function() {
       AuthService.logout();
