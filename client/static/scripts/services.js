@@ -17,12 +17,115 @@ zentypeServices.factory('WordApiService', ['$http',
   }]);
 
 
-zentypeServices.factory('SpeedtestService', ['$http', '$q', '$window',
-  function ($http, $q, $window){
+zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$window',
+  function ($http, $q, $interval, $window) {
 
-    return {
-      testDetails: 'the test details'
+    // date: { type: Date, default: Date.now },
+    // wpm: { type: Number, required: true },
+    // total_words: { type: Number, required: true },
+    // words_incorrect: { type: Number, required: true },
+    // total_keystrokes: { type: Number, required: true },
+    // keystrokes_incorrect: { type: Number, required: true }
+
+    var service = {
+
+      testDetails: {},
+
+      initTest: function () {
+        this.testDetails.wordSet = [];
+        this.testDetails.wordSetIndex = 0;
+        this.testDetails.currText = '';
+        this.testDetails.speedtestTime = 0;
+        this.testDetails.timerInterval = null;
+        this.testDetails.timerRunning = false;
+        this.testDetails.score = {
+          date: Date.now(),
+          wpm: null,
+          totalWords: 0,
+          correct: 0,
+          incorrect: 0,
+          totalKeystrokes: 0,
+          keystrokesIncorrect: 0
+        };
+        this.testDetails.userWpm = null;
+        this.testDetails.speedtestComplete = false;
+        this.getWords(1, 200, 10)
+        .then(function () {
+          console.log('testDetails', service.testDetails);
+        }, function (err) {
+          console.log('ERROR: ', err);
+        });
+      },
+
+      getWords: function (minRank, maxRank, size) {
+        var deferred = $q.defer();
+        var context = this;
+        var currWordSet = [];
+        // fetch random words from the api
+        return $http({
+          method: 'GET',
+          url: '/api/speedtest/randomlist',
+          params: {
+            size: size || 60,
+            minrank: minRank,
+            maxrank: maxRank
+          }
+        })
+        .then(function (res) {
+          JSON.parse(res.data).forEach(function(item, index) {
+            currWordSet.push({
+              word: item,
+              correct: null
+            });
+          });
+          context.testDetails.wordSet = currWordSet.slice();
+          deferred.resolve(context.testDetails);
+          return deferred.promise;
+        }, function (err) {
+          deferred.reject(err);
+          return deferred.promise;
+        });
+      },
+
+      navigation: {
+        locations: ['loadingscreen', 'speedtest', 'scorescreen'],
+        currLocIndex: 0,
+        currLoc: 'loadingscreen',
+        next: function () {
+          if(this.locations[this.currLocIndex + 1]) {
+            this.currLocIndex++;
+          } else {
+            this.currLocIndex = 0;
+            service.initTest();
+          }
+          this.currLoc = this.locations[this.currLocIndex];
+        }
+      }
+
     };
+
+    // testDetails utility functions
+    service.testDetails.calculateWpm = function () {
+      var wpm = Math.floor(this.score.correct / (this.speedtestTime / 60));
+      this.userWpm = wpm > 0 && wpm < 500 ? wpm : null;
+    };
+
+    service.testDetails.startStopTimer = function() {
+      var context = this;
+      if(!context.timerRunning) {
+        context.timerInterval = $interval(function() {
+          context.speedtestTime += 1;
+        }, 1000);
+        context.timerRunning = true;
+      } else {
+        $interval.cancel(context.timerInterval);
+        context.timerRunning = false;
+      }
+    };
+
+    service.initTest();
+
+    return service;
 
   }]);
 
@@ -153,11 +256,10 @@ zentypeServices.factory('AuthService', ['$http', '$q', '$window',
 zentypeServices.factory('UserDetailService', ['$http', '$q', '$window',
   function ($http, $q, $window){
 
-    var deferred = $q.defer();
-
     return {
       userData: null,
       getUser: function(username) {
+        var deferred = $q.defer();
         var context = this;
         return $http({
           method: 'GET',
@@ -182,6 +284,18 @@ zentypeServices.factory('UserDetailService', ['$http', '$q', '$window',
   }]);
 
 
+/////////////// UTILITY SERVICES ///////////////////
+
+// navigation service for speedtests
+// maybe don't use this
+zentypeServices.factory('SpeedtestNavService', [
+  function (){
+
+    // return {
+    //   next: function()
+    // };
+
+  }]);
 
 
 

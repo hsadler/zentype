@@ -12,7 +12,7 @@
             <span>Typing speed</span>
           </td>
           <td class="text-right">
-            <span ng-bind="testDetails.userWpm + 'wpm' || 0 + 'wpm'"></span>
+            <span ng-bind="testDetails.userWpm ? testDetails.userWpm + ' wpm' : 0 + ' wpm'"></span>
           </td>
         </tr>
         <tr>
@@ -43,7 +43,7 @@
     </table>
 
     <button class="btn btn-lg btn-info"
-      ng-click="nextLoc()">
+      ng-click="navigation.next()">
       Test again
     </button>
 

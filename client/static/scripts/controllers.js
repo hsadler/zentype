@@ -27,7 +27,14 @@ zentypeControllers.controller('HomeCtrl', ['$scope',
 zentypeControllers.controller('SpeedtestPageCtrl', ['$scope', 'SpeedtestService',
   function ($scope, SpeedtestService) {
 
-    console.log(SpeedtestService.testDetails);
+    // watch the SpeedtestService and databind the test details to the controller scope
+    $scope.$watch(function () { return SpeedtestService.testDetails; }, function (newVal) {
+      $scope.testDetails = newVal;
+    });
+    // watch the SpeedtestService and databind the test navigation to the controller scope
+    $scope.$watch(function () { return SpeedtestService.navigation; }, function (newVal) {
+      $scope.navigation = newVal;
+    });
 
   }]);
 

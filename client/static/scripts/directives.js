@@ -38,6 +38,128 @@ zentypeDirectives.directive('preventTab', [
 
 
 ///////////////// SPEEDTEST DIRECTIVES ////////////////////////
+///
+/// these are the new directives for the standard speedtest
+
+// loadingscreen component directive
+zentypeDirectives.directive('ztLoadingscreen', [
+  function () {
+    return {
+      scope: { //own scope
+        testDetails: '=',
+        navigation: '='
+      },
+      restrict: 'E', //can only be an element
+      replace: true,
+      templateUrl: '../templates/zt-loadingscreen.html',
+
+      link: function (scope, elem, attrs) {
+        scope.$watchGroup(['navigation.currLoc', 'testDetails.wordSet'], function(newVal, oldVal) {
+          if(newVal[0] === 'loadingscreen' && newVal[1].length > 0) {
+            scope.navigation.next();
+          }
+        });
+      },
+
+      controller: ['$scope', function($scope) {
+
+      }]
+
+    };
+  }]);
+
+// speedtest component directive
+zentypeDirectives.directive('ztSpeedtest', [
+  function() {
+    return { //own scope
+      scope: {
+        testDetails: '=',
+        // perhaps pass an options object to the speedtest to account for different speedtest types
+        // testOptions: '=',
+        navigation: '='
+      },
+      restrict: 'E', //can only be an element
+      replace: true,
+      templateUrl: '../templates/zt-speedtest.html',
+
+      link: function(scope,  elem, attrs) {
+        scope.$watch('testDetails.speedtestComplete', function(newVal) {
+          if(newVal === true) {
+            scope.navigation.next();
+          }
+        });
+      },
+
+      controller: ['$scope', '$http', '$interval', 'SpeedtestService',
+        function($scope, $http, $interval, SpeedtestService) {
+
+          // save quick pointer variable
+          var td = SpeedtestService.testDetails;
+
+          $scope.handleUserType = function(event) {
+            // only run the function if the speedtest is not complete
+            if(!td.speedtestComplete) {
+              // if it is the first char entered, start the timer
+              if(!td.timerRunning) {
+                td.startStopTimer();
+              }
+
+              // if last letter of last word is correct, stop the test and calc results
+              if(td.wordSetIndex === td.wordSet.length - 1 && td.currText === td.wordSet[td.wordSet.length - 1].word) {
+                $interval.cancel(td.timerInterval);
+                td.wordSet[td.wordSetIndex].correct = true;
+                td.score.correct += 1;
+                td.speedtestComplete = true;
+                td.currText = '';
+              }
+
+              // else if the key pressed is a space, evaluate the currText
+              else if(event.keyCode === 32) {
+                var text = td.currText.trim();
+                if(text === td.wordSet[td.wordSetIndex].word) {
+                  td.wordSet[td.wordSetIndex].correct = true;
+                  td.score.correct += 1;
+                } else {
+                  td.wordSet[td.wordSetIndex].correct = false;
+                  td.score.incorrect += 1;
+                }
+                td.wordSetIndex += 1;
+                td.calculateWpm();
+                if(td.wordSetIndex === td.wordSet.length) {
+                  // stop the speedtest
+                  $interval.cancel(td.timerInterval);
+                  td.speedtestComplete = true;
+                }
+                td.currText = '';
+              }
+            }
+          };
+
+        }] // end ztSpeedtest controller
+
+    };
+  }]);
+
+// scorescreen component directive
+zentypeDirectives.directive('ztScorescreen', [
+  function() {
+    return {
+      scope: { //own scope
+        testDetails: '=',
+        navigation: '='
+      },
+      restrict: 'E', //can only be an element
+      replace: true,
+      templateUrl: '../templates/zt-scorescreen.html',
+
+      link: function(scope, elem, attrs) {},
+
+      controller: ['$scope', function($scope) {
+
+      }]
+
+    };
+  }]);
 
 
 ///////////////// CHALLENGE DIRECTIVES ////////////////////////
@@ -98,8 +220,8 @@ zentypeDirectives.directive('ztChallengeStartscreen', [
   }]);
 
 // loadingscreen component directive
-zentypeDirectives.directive('ztChallengeLoadingscreen', ['SpeedtestService',
-  function (SpeedtestService) {
+zentypeDirectives.directive('ztChallengeLoadingscreen', [
+  function () {
     return {
       scope: { //own scope
         currLoc: '=',
@@ -218,7 +340,7 @@ zentypeDirectives.directive('ztChallengeSpeedtest', [
             }
           };
 
-        }] // end ztSpeedtest controller
+        }] // end ztChallengeSpeedtest controller
 
     };
   }]);

@@ -1,20 +1,21 @@
-<h1>Speedtest Page</h1>
 
-<zt-challenge-loadingscreen
-  curr-loc="currLoc"
-  test-details="testDetails"
-  ng-show="currLoc === 'loadingscreen'">
-</zt-challenge-loadingscreen>
+<!-- directives for speedtest navigation -->
 
-<zt-challenge-speedtest
-  curr-loc="currLoc"
-  word-set='wordSet'
+<zt-loadingscreen
   test-details="testDetails"
-  ng-show="currLoc === 'speedtest'">
-</zt-challenge-speedtest>
+  navigation="navigation"
+  ng-show="navigation.currLoc === 'loadingscreen'">
+</zt-loadingscreen>
 
-<zt-challenge-scorescreen
-  curr-loc="currLoc"
+<zt-speedtest
   test-details="testDetails"
-  ng-show="currLoc === 'scorescreen'">
-</zt-challenge-scorescreen>
+  navigation="navigation"
+  ng-show="navigation.currLoc === 'speedtest'">
+</zt-speedtest>
+
+<zt-scorescreen
+  test-details="testDetails"
+  navigation="navigation"
+  ng-show="navigation.currLoc === 'scorescreen'">
+</zt-scorescreen>
+
