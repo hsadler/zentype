@@ -39,8 +39,11 @@ zentypeDirectives.directive('preventTab', [
 
 ///////////////// SPEEDTEST DIRECTIVES ////////////////////////
 
+
+///////////////// CHALLENGE DIRECTIVES ////////////////////////
+
 // startscreen component directive
-zentypeDirectives.directive('ztStartscreen', [
+zentypeDirectives.directive('ztChallengeStartscreen', [
   function () {
     return {
       scope: { //own scope
@@ -71,7 +74,7 @@ zentypeDirectives.directive('ztStartscreen', [
             method: 'GET',
             url: '/api/speedtest/randomlist',
             params: {
-              size: 10,
+              size: 60,
               minrank: minRank,
               maxrank: maxRank
             }
@@ -95,8 +98,8 @@ zentypeDirectives.directive('ztStartscreen', [
   }]);
 
 // loadingscreen component directive
-zentypeDirectives.directive('ztLoadingscreen', [
-  function() {
+zentypeDirectives.directive('ztChallengeLoadingscreen', ['SpeedtestService',
+  function (SpeedtestService) {
     return {
       scope: { //own scope
         currLoc: '=',
@@ -106,7 +109,7 @@ zentypeDirectives.directive('ztLoadingscreen', [
       replace: true,
       templateUrl: '../templates/zt-loadingscreen.html',
 
-      link: function(scope, elem, attrs) {
+      link: function (scope, elem, attrs) {
 
         scope.$watchGroup(['currLoc', 'testDetails.wordSet'], function(newVal, oldVal) {
           if(newVal[0] === 'loadingscreen' && newVal[1].length > 0) {
@@ -118,7 +121,7 @@ zentypeDirectives.directive('ztLoadingscreen', [
 
       controller: ['$scope', function($scope) {
 
-        $scope.nextLoc = function() {
+        $scope.nextLoc = function () {
           $scope.currLoc = 'speedtest';
         };
 
@@ -128,7 +131,7 @@ zentypeDirectives.directive('ztLoadingscreen', [
   }]);
 
 // speedtest component directive
-zentypeDirectives.directive('ztSpeedtest', [
+zentypeDirectives.directive('ztChallengeSpeedtest', [
   function() {
     return { //own scope
       scope: {
@@ -221,7 +224,7 @@ zentypeDirectives.directive('ztSpeedtest', [
   }]);
 
 // scorescreen component directive
-zentypeDirectives.directive('ztScorescreen', [
+zentypeDirectives.directive('ztChallengeScorescreen', [
   function() {
     return {
       scope: { //own scope

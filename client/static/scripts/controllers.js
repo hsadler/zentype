@@ -18,19 +18,22 @@ zentypeControllers.controller('MainCtrl', ['$scope', 'WordApiService', 'AuthServ
   }]);
 
 
-zentypeControllers.controller('HomeCtrl', ['$scope', '$http', 'WordApiService',
-  function ($scope, $http, WordApiService) {
+zentypeControllers.controller('HomeCtrl', ['$scope',
+  function ($scope) {
 
   }]);
 
 
-zentypeControllers.controller('SpeedtestPageCtrl', ['$scope',
+zentypeControllers.controller('SpeedtestPageCtrl', ['$scope', 'SpeedtestService',
+  function ($scope, SpeedtestService) {
+
+    console.log(SpeedtestService.testDetails);
+
+  }]);
+
+
+zentypeControllers.controller('ChallengesPageCtrl', ['$scope',
   function ($scope) {
-    // logic for displaying templates based on state here
-    // perhaps this is where user selects speedtest parameters,
-    // which are then passed to the ztSpeedtest directive
-    // speedtest is completed and score info is passed to this scope
-    // score info is then passed to endGamed directive
 
     // set initial screen location
     $scope.currLoc = 'startscreen';

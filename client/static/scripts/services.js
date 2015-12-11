@@ -17,6 +17,16 @@ zentypeServices.factory('WordApiService', ['$http',
   }]);
 
 
+zentypeServices.factory('SpeedtestService', ['$http', '$q', '$window',
+  function ($http, $q, $window){
+
+    return {
+      testDetails: 'the test details'
+    };
+
+  }]);
+
+
 zentypeServices.factory('AuthService', ['$http', '$q', '$window',
   function ($http, $q, $window){
 
