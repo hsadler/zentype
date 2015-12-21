@@ -93,50 +93,9 @@ zentypeDirectives.directive('ztSpeedtest', [
       controller: ['$scope', '$http', '$interval', 'SpeedtestService',
         function($scope, $http, $interval, SpeedtestService) {
 
-          // save quick pointer variable
-          var td = SpeedtestService.testDetails;
+          $scope.handleUserType = SpeedtestService.handleUserType;
 
-          $scope.handleUserType = function(event) {
-            // only run the function if the speedtest is not complete
-            if(!td.speedtestComplete) {
-              // if it is the first char entered, start the timer
-              if(!td.timerRunning) {
-                td.startStopTimer();
-              }
-
-              // if last letter of last word is correct, stop the test and calc results
-              if(td.wordSetIndex === td.wordSet.length - 1 && td.currText === td.wordSet[td.wordSet.length - 1].word) {
-                $interval.cancel(td.timerInterval);
-                td.wordSet[td.wordSetIndex].correct = true;
-                td.score.correct += 1;
-                td.speedtestComplete = true;
-                td.currText = '';
-              }
-
-              // else if the key pressed is a space, evaluate the currText
-              else if(event.keyCode === 32) {
-                var text = td.currText.trim();
-                if(text === td.wordSet[td.wordSetIndex].word) {
-                  td.wordSet[td.wordSetIndex].correct = true;
-                  td.score.correct += 1;
-                } else {
-                  td.wordSet[td.wordSetIndex].correct = false;
-                  td.score.incorrect += 1;
-                }
-                td.wordSetIndex += 1;
-                td.calculateWpm();
-                if(td.wordSetIndex === td.wordSet.length) {
-                  // stop the speedtest
-                  $interval.cancel(td.timerInterval);
-                  td.speedtestComplete = true;
-                }
-                td.currText = '';
-              }
-            }
-          };
-
-        }] // end ztSpeedtest controller
-
+        }]
     };
   }]);
 

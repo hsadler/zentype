@@ -24,6 +24,7 @@ zentypeControllers.controller('HomeCtrl', ['$scope',
   }]);
 
 
+// standard speedtest page
 zentypeControllers.controller('SpeedtestPageCtrl', ['$scope', 'SpeedtestService',
   function ($scope, SpeedtestService) {
 
@@ -39,6 +40,7 @@ zentypeControllers.controller('SpeedtestPageCtrl', ['$scope', 'SpeedtestService'
   }]);
 
 
+// mutiple challenges page (coming later)
 zentypeControllers.controller('ChallengesPageCtrl', ['$scope',
   function ($scope) {
 

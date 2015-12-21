@@ -1,5 +1,5 @@
 XXX add scorescreen to speedtest
-X add MongoDB (may not need bluebird for what we are doing with user data and MongoDB)
+X add MongoDB
 X add user schema
 
 
@@ -13,11 +13,9 @@ add user auth
     but user can only administrate their own page (dashboard)
 
 
-- transfer all the speedtest business logic to services
-
-
-- add standard test (separate this from challenges)
-- add user stats tracking
+X transfer all the speedtest business logic to services (for standard speed test)
+- add stats collection during speedtests (on client)
+- add user stats tracking (backend)
 
 - add overall user stats
   - number of tests
