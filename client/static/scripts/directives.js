@@ -375,7 +375,7 @@ zentypeDirectives.directive('ztChallengeScorescreen', [
 //-----------------------------TESTING BELOW------------------------------//
 
 
-// test directives (for learning)
+// test directives (examples for learning)
 zentypeDirectives.directive('helloWorld', [
   function() {
     return {
