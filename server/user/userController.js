@@ -136,6 +136,34 @@ module.exports = {
       res.sendStatus(401);
     }
 
+  },
+
+  saveTestRecord: function(req, res) {
+    var username = req.body.username;
+    var record = req.body.testRecord;
+
+    console.log('POST for saveTestRecord with username: ' + username + ' and record: ', record);
+
+    User.findOne({
+      username: username
+    })
+    .then(function(user) {
+      if(user) {
+        // push the new test record to the db
+        user.user_stats.test_records.push(record);
+        user.save()
+        .then(function(user) {
+          res.json(user.toObject());
+        }, function(err) {
+          res.json(err);
+        });
+      } else {
+        res.sendStatus(404);
+      }
+    }, function(err) {
+      res.status(500).send(err);
+    });
+
   }
 
 

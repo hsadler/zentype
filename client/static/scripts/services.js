@@ -17,8 +17,8 @@ zentypeServices.factory('WordApiService', ['$http',
   }]);
 
 
-zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$window',
-  function ($http, $q, $interval, $window) {
+zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$window', 'AuthService',
+  function ($http, $q, $interval, $window, AuthService) {
 
     var service = {
 
@@ -80,35 +80,37 @@ zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$windo
         });
       },
 
-      saveTestRecord: function() {
-        var td = this.testDetails;
+      saveTestRecord: function () {
+        if(AuthService.userData) {
+          var td = this.testDetails;
 
-        var words = td.wordSet.map(function(wordObj) {
-          return wordObj.word;
-        }).join(' ');
-        console.log(words);
+          var words = td.wordSet.map(function (wordObj) {
+            return wordObj.word;
+          }).join(' ');
 
-        var testRecord = {
-          date: Date.now(),
-          wpm: td.userWpm,
-          total_words: td.wordSet.length,
-          words_incorrect: td.score.incorrect,
-          total_keystrokes: td.score.totalKeystrokes,
-          keystrokes_incorrect: td.score.keystrokesIncorrect
-        };
+          var testRecord = {
+            date: Date.now(),
+            wpm: td.userWpm,
+            total_words: td.wordSet.length,
+            words_incorrect: td.score.incorrect,
+            total_keystrokes: td.score.totalKeystrokes,
+            keystrokes_incorrect: td.score.keystrokesIncorrect
+          };
 
-        console.log('testDetails.score: ');
-        console.log(td.score);
-
-        console.log('sending testRecord...');
-        console.log(testRecord);
-
-        $http({
-          method: 'POST',
-          url: '/api/user/save-test',
-          data: testRecord
-        });
-
+          $http({
+            method: 'POST',
+            url: '/api/user/save-test',
+            data: {
+              username: AuthService.userData.username,
+              testRecord: testRecord
+            }
+          })
+          .then(function (res) {
+            AuthService.userData = res.data;
+          }, function (err) {
+            console.log('ERROR: ', err);
+          });
+        }
       },
 
       handleUserType: function(event) {

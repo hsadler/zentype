@@ -130,7 +130,10 @@ zentypeControllers.controller('UserDashboardCtrl', ['$scope', '$location', 'Auth
 
     $scope.user = {
       username: '',
-      level: null
+      level: null,
+      user_stats: {
+        test_records: []
+      }
     };
 
     $scope.$watch(function () { return AuthService.userData; }, function (newVal) {
