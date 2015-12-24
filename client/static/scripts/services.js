@@ -20,13 +20,6 @@ zentypeServices.factory('WordApiService', ['$http',
 zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$window',
   function ($http, $q, $interval, $window) {
 
-    // date: { type: Date, default: Date.now },
-    // wpm: { type: Number, required: true },
-    // total_words: { type: Number, required: true },
-    // words_incorrect: { type: Number, required: true },
-    // total_keystrokes: { type: Number, required: true },
-    // keystrokes_incorrect: { type: Number, required: true }
-
     var service = {
 
       testDetails: {},
@@ -87,14 +80,64 @@ zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$windo
         });
       },
 
+      saveTestRecord: function() {
+        var td = this.testDetails;
+
+        var words = td.wordSet.map(function(wordObj) {
+          return wordObj.word;
+        }).join(' ');
+        console.log(words);
+
+        var testRecord = {
+          date: Date.now(),
+          wpm: td.userWpm,
+          total_words: td.wordSet.length,
+          words_incorrect: td.score.incorrect,
+          total_keystrokes: td.score.totalKeystrokes,
+          keystrokes_incorrect: td.score.keystrokesIncorrect
+        };
+
+        console.log('testDetails.score: ');
+        console.log(td.score);
+
+        console.log('sending testRecord...');
+        console.log(testRecord);
+
+        $http({
+          method: 'POST',
+          url: '/api/user/save-test',
+          data: testRecord
+        });
+
+      },
+
       handleUserType: function(event) {
         // save quick pointer to test details
         var td = this.testDetails;
+        // increment total keystrokes on all keys except backspaces
+        if(event.keyCode !== 8) {
+          td.score.totalKeystrokes += 1;
+        }
         // only run the function if the speedtest is not complete
         if(!td.speedtestComplete) {
           // if it is the first char entered, start the timer
           if(!td.timerRunning) {
             td.startStopTimer();
+          }
+
+
+          // check if the keypress is correct. if not, increment incorrect keystrokes
+          var lastTypedChar = td.currText[td.currText.length - 1];
+          var currWordIndex = td.currText.length - 1;
+          var currWordFromSet = td.wordSet[td.wordSetIndex].word;
+
+          if(
+            currWordFromSet[currWordIndex] &&
+            lastTypedChar !== currWordFromSet[currWordIndex] &&
+            // incorrect keystrokes cannot be spaces or backspaces
+            (event.keyCode !== 32 || event.keyCode !== 8)
+          ) {
+            td.score.keystrokesIncorrect += 1;
           }
 
           // if last letter of last word is correct, stop the test and calc results
@@ -104,6 +147,7 @@ zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$windo
             td.score.correct += 1;
             td.speedtestComplete = true;
             td.currText = '';
+            service.saveTestRecord();
           }
 
           // else if the key pressed is a space, evaluate the currText
@@ -122,6 +166,7 @@ zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$windo
               // stop the speedtest
               $interval.cancel(td.timerInterval);
               td.speedtestComplete = true;
+              service.saveTestRecord();
             }
             td.currText = '';
           }
@@ -149,6 +194,7 @@ zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$windo
     service.testDetails.calculateWpm = function () {
       var wpm = Math.floor(this.score.correct / (this.speedtestTime / 60));
       this.userWpm = wpm > 0 && wpm < 500 ? wpm : null;
+      return this.userWpm;
     };
 
     service.testDetails.startStopTimer = function() {
@@ -325,18 +371,8 @@ zentypeServices.factory('UserDetailService', ['$http', '$q', '$window',
   }]);
 
 
-/////////////// UTILITY SERVICES ///////////////////
 
-// navigation service for speedtests
-// maybe don't use this
-zentypeServices.factory('SpeedtestNavService', [
-  function (){
 
-    // return {
-    //   next: function()
-    // };
-
-  }]);
 
 
 
