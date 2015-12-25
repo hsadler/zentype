@@ -145,6 +145,11 @@ zentypeControllers.controller('UserDashboardCtrl', ['$scope', '$location', 'Auth
       $location.path('/login');
     };
 
+    $scope.calcAccuracy = function(total, incorrect) {
+      var correct = total - incorrect;
+      return Math.round((correct / total) * 10000) / 100;
+    }
+
   }]);
 
 

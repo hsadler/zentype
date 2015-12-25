@@ -42,7 +42,7 @@ zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$windo
         };
         this.testDetails.userWpm = null;
         this.testDetails.speedtestComplete = false;
-        this.getWords(1, 200, 10)
+        this.getWords(1, 100, 60)
         .then(function () {
           console.log('testDetails', service.testDetails);
         }, function (err) {
