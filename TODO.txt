@@ -17,16 +17,9 @@ X transfer all the speedtest business logic to services (for standard speed test
 X add stats collection during speedtests (on client)
 X add user stats tracking (backend)
 
-- add overall user stats
-  - number of tests
-  - total words typed
-  - overall accuracy
-  - overall wpm
-  - etc.
+X add overall user stats
 
-- add more robust stats for speedtest:
-  - keystrokes
-  - accuracy
-  - trouble words
-  - trouble letters
-
+- clean incoming word lists
+- add incorrect key tracking
+- add incorrect word tracking
+- add graphs for stats
