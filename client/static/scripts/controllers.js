@@ -125,18 +125,11 @@ zentypeControllers.controller('UserLoginCtrl', ['$scope', '$location', 'AuthServ
   }]);
 
 
-zentypeControllers.controller('UserDashboardCtrl', ['$scope', '$location', 'AuthService',
-  function ($scope, $location, AuthService) {
+zentypeControllers.controller('UserDashboardCtrl', ['$scope', '$location', 'AuthService', 'UserDetailService', 'UtilityService',
+  function ($scope, $location, AuthService, UserDetailService, UtilityService) {
 
-    $scope.user = {
-      username: '',
-      level: null,
-      user_stats: {
-        test_records: []
-      }
-    };
-
-    $scope.$watch(function () { return AuthService.userData; }, function (newVal) {
+    $scope.$watch(function () { return UserDetailService.userData; }, function (newVal) {
+      console.log(newVal);
       $scope.user = newVal;
     });
 
@@ -145,10 +138,19 @@ zentypeControllers.controller('UserDashboardCtrl', ['$scope', '$location', 'Auth
       $location.path('/login');
     };
 
+    // for getting user averages
+    $scope.userLevel = function() { return UserDetailService.userLevel(); };
+    $scope.userWpm = function() { return UserDetailService.userWpm(); };
+    $scope.userTotalTests = function() { return UserDetailService.userTotalTests(); };
+    $scope.userTotalWordsTyped = function() { return UserDetailService.userTotalWordsTyped(); };
+    $scope.userTotalKeystrokes = function() { return UserDetailService.userTotalKeystrokes(); };
+    $scope.userWordAccuracy = function() { return UserDetailService.userWordAccuracy(); };
+    $scope.userKeystrokeAccuracy = function() { return UserDetailService.userKeystrokeAccuracy(); };
+
+    // utility functions
     $scope.calcAccuracy = function(total, incorrect) {
-      var correct = total - incorrect;
-      return Math.round((correct / total) * 10000) / 100;
-    }
+      return UtilityService.calcAccuracy(total, incorrect);
+    };
 
   }]);
 

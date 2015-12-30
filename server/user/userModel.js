@@ -21,7 +21,7 @@ var charHash = (function() {
 var UserSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   hashed_password: { type: String },
-  level: { type: Number, default: 1 },
+  xp_points: { type: Number, default: 0 },
   global_rank: { type: Number, default: 0 },
   user_stats: {
     test_records:[{

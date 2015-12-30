@@ -74,6 +74,23 @@ div.scorescreen-container span {
   margin-right: 6px
 }
 
+
+/*dashboard styles*/
+.dashboard-username-header {
+  font-size: 62px;
+  margin: 0 0 2px 0;
+}
+a.dashboard-logout-link:hover, a.dashboard-logout-link:focus {
+  color: #67dcff;
+  cursor: pointer;
+}
+table.dashboard-stats tbody tr td {
+  /*font-size: 16px;*/
+  padding-left: 14px;
+  padding-right: 14px;
+}
+
+
 /*login styles*/
 p.login-signup-ask {
   margin-bottom: 0;

@@ -17,8 +17,8 @@ zentypeServices.factory('WordApiService', ['$http',
   }]);
 
 
-zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$window', 'AuthService',
-  function ($http, $q, $interval, $window, AuthService) {
+zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$window', 'UserDetailService',
+  function ($http, $q, $interval, $window, UserDetailService) {
 
     var service = {
 
@@ -44,7 +44,7 @@ zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$windo
         this.testDetails.speedtestComplete = false;
         this.getWords(1, 100, 60)
         .then(function () {
-          console.log('testDetails', service.testDetails);
+          // console.log('testDetails', service.testDetails);
         }, function (err) {
           console.log('ERROR: ', err);
         });
@@ -81,7 +81,7 @@ zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$windo
       },
 
       saveTestRecord: function () {
-        if(AuthService.userData) {
+        if(UserDetailService.userData) {
           var td = this.testDetails;
 
           var words = td.wordSet.map(function (wordObj) {
@@ -101,12 +101,12 @@ zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$windo
             method: 'POST',
             url: '/api/user/save-test',
             data: {
-              username: AuthService.userData.username,
+              username: UserDetailService.userData.username,
               testRecord: testRecord
             }
           })
           .then(function (res) {
-            AuthService.userData = res.data;
+            UserDetailService.userData = res.data;
           }, function (err) {
             console.log('ERROR: ', err);
           });
@@ -219,13 +219,12 @@ zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$windo
   }]);
 
 
-zentypeServices.factory('AuthService', ['$http', '$q', '$window',
-  function ($http, $q, $window){
+zentypeServices.factory('AuthService', ['$http', '$q', '$window', 'UserDetailService',
+  function ($http, $q, $window, UserDetailService){
 
     return {
 
       auth: false,
-      userData: null,
 
       signup: function(username, password) {
         var deferred = $q.defer();
@@ -240,7 +239,7 @@ zentypeServices.factory('AuthService', ['$http', '$q', '$window',
         })
         .then(function (res) {
           // set the AuthService data to the response
-          context.userData = res.data;
+          UserDetailService.userData = res.data;
           context.auth = true;
           $window.localStorage['com.ZenType'] = res.data.token;
 
@@ -265,7 +264,7 @@ zentypeServices.factory('AuthService', ['$http', '$q', '$window',
         })
         .then(function (res) {
           // set the AuthService data to the response
-          context.userData = res.data;
+          UserDetailService.userData = res.data;
           context.auth = true;
           $window.localStorage['com.ZenType'] = res.data.token;
 
@@ -279,7 +278,7 @@ zentypeServices.factory('AuthService', ['$http', '$q', '$window',
 
       logout: function() {
         this.auth = false;
-        this.userData = null;
+        UserDetailService.userData = null;
         $window.localStorage.removeItem('com.ZenType');
       },
 
@@ -297,7 +296,7 @@ zentypeServices.factory('AuthService', ['$http', '$q', '$window',
           })
           .then(function (res) {
             // set the AuthService data to the response
-            context.userData = res.data;
+            UserDetailService.userData = res.data;
             context.auth = true;
             $window.localStorage['com.ZenType'] = res.data.token;
           }, function (err) {
@@ -321,7 +320,7 @@ zentypeServices.factory('AuthService', ['$http', '$q', '$window',
           })
           .then(function (res) {
             // set the AuthService data to the response
-            context.userData = res.data;
+            UserDetailService.userData = res.data;
             context.auth = true;
             $window.localStorage['com.ZenType'] = res.data.token;
 
@@ -342,11 +341,13 @@ zentypeServices.factory('AuthService', ['$http', '$q', '$window',
   }]);
 
 
-zentypeServices.factory('UserDetailService', ['$http', '$q', '$window',
-  function ($http, $q, $window){
+zentypeServices.factory('UserDetailService', ['$http', '$q', 'UtilityService',
+  function ($http, $q, UtilityService){
 
-    return {
+    var service = {
+
       userData: null,
+
       getUser: function(username) {
         var deferred = $q.defer();
         var context = this;
@@ -367,6 +368,80 @@ zentypeServices.factory('UserDetailService', ['$http', '$q', '$window',
           deferred.reject(err);
           return deferred.promise;
         });
+      },
+
+      userLevel: function() {
+        if(this.userData) {
+          return UtilityService.calcLvl(this.userData.xp_points) || 1;
+        }
+      },
+
+      userWpm: function() {
+        var wpms = this.userData.user_stats.test_records.map(function(record) {
+          return record.wpm;
+        });
+        return Math.round(UtilityService.avg(wpms));
+      },
+
+      userTotalTests: function() {
+        return this.userData.user_stats.test_records.length;
+      },
+
+      userTotalWordsTyped: function() {
+        var wordCount = 0;
+        this.userData.user_stats.test_records.forEach(function(record) {
+          wordCount += record.total_words;
+        });
+        return wordCount;
+      },
+
+      userTotalKeystrokes: function() {
+        var keystrokeCount = 0;
+        this.userData.user_stats.test_records.forEach(function(record) {
+          keystrokeCount += record.total_keystrokes;
+        });
+        return keystrokeCount;
+      },
+
+      userWordAccuracy: function() {
+        var accurs = this.userData.user_stats.test_records.map(function(record) {
+          return UtilityService.calcAccuracy(record.total_words, record.words_incorrect);
+        });
+        return Math.round(UtilityService.avg(accurs) * 100) / 100;
+      },
+
+      userKeystrokeAccuracy: function() {
+        var accurs = this.userData.user_stats.test_records.map(function(record) {
+          return UtilityService.calcAccuracy(record.total_keystrokes, record.keystrokes_incorrect);
+        });
+        return Math.round(UtilityService.avg(accurs) * 100) / 100;
+      }
+
+    };
+
+    return service;
+
+  }]);
+
+
+// for utility helper functions
+zentypeServices.factory('UtilityService', [
+  function (){
+
+    return {
+      avg: function(arr) {
+        var sum = 0;
+        arr.forEach(function(item, i) {
+          sum += item;
+        });
+        return sum / arr.length;
+      },
+      calcLvl: function(xp) {
+        return Math.round(0.12 * Math.sqrt(xp));
+      },
+      calcAccuracy: function(total, incorrect) {
+        var correct = total - incorrect;
+        return Math.round((correct / total) * 10000) / 100;
       }
     };
 
