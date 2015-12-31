@@ -32,8 +32,8 @@ var UserSchema = new mongoose.Schema({
       total_keystrokes: { type: Number, required: true },
       keystrokes_incorrect: { type: Number, required: true }
     }],
-    // will implement characterRecords later
-    // characterRecords: charHash,
+    character_records: charHash,
+    word_records: { default: {} },
     challenge_records: [{
       challenge_name: { type: String, required: true },
       unlock_date: { type: Date, default: Date.now },
@@ -45,7 +45,7 @@ var UserSchema = new mongoose.Schema({
     achievement_name: { type: String, required: true },
     unlock_date: { type: Date, default: Date.now }
   }]
-});
+}, { minimize: false });
 
 
 // static methods

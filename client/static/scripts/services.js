@@ -84,10 +84,6 @@ zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$windo
         if(UserDetailService.userData) {
           var td = this.testDetails;
 
-          var words = td.wordSet.map(function (wordObj) {
-            return wordObj.word;
-          }).join(' ');
-
           var testRecord = {
             date: Date.now(),
             wpm: td.userWpm,
@@ -377,44 +373,57 @@ zentypeServices.factory('UserDetailService', ['$http', '$q', 'UtilityService',
       },
 
       userWpm: function() {
-        var wpms = this.userData.user_stats.test_records.map(function(record) {
-          return record.wpm;
-        });
-        return Math.round(UtilityService.avg(wpms));
+        if(this.userData) {
+          var wpms = this.userData.user_stats.test_records.map(function(record) {
+            return record.wpm;
+          });
+          return Math.round(UtilityService.avg(wpms));
+        }
       },
 
       userTotalTests: function() {
-        return this.userData.user_stats.test_records.length;
+        if(this.userData) {
+          return this.userData.user_stats.test_records.length;
+        }
       },
 
       userTotalWordsTyped: function() {
-        var wordCount = 0;
-        this.userData.user_stats.test_records.forEach(function(record) {
-          wordCount += record.total_words;
-        });
-        return wordCount;
+        if(this.userData) {
+          var wordCount = 0;
+          this.userData.user_stats.test_records.forEach(function(record) {
+            wordCount += record.total_words;
+          });
+          return wordCount;
+        }
       },
 
       userTotalKeystrokes: function() {
-        var keystrokeCount = 0;
-        this.userData.user_stats.test_records.forEach(function(record) {
-          keystrokeCount += record.total_keystrokes;
-        });
-        return keystrokeCount;
+        if(this.userData) {
+          var keystrokeCount = 0;
+          this.userData.user_stats.test_records.forEach(function(record) {
+            keystrokeCount += record.total_keystrokes;
+          });
+          return keystrokeCount;
+        }
       },
 
       userWordAccuracy: function() {
-        var accurs = this.userData.user_stats.test_records.map(function(record) {
-          return UtilityService.calcAccuracy(record.total_words, record.words_incorrect);
-        });
-        return Math.round(UtilityService.avg(accurs) * 100) / 100;
+        if(this.userData) {
+          var accurs = this.userData.user_stats.test_records.map(function(record) {
+            return UtilityService.calcAccuracy(record.total_words, record.words_incorrect);
+          });
+          return Math.round(UtilityService.avg(accurs) * 100) / 100;
+
+        }
       },
 
       userKeystrokeAccuracy: function() {
-        var accurs = this.userData.user_stats.test_records.map(function(record) {
-          return UtilityService.calcAccuracy(record.total_keystrokes, record.keystrokes_incorrect);
-        });
-        return Math.round(UtilityService.avg(accurs) * 100) / 100;
+        if(this.userData) {
+          var accurs = this.userData.user_stats.test_records.map(function(record) {
+            return UtilityService.calcAccuracy(record.total_keystrokes, record.keystrokes_incorrect);
+          });
+          return Math.round(UtilityService.avg(accurs) * 100) / 100;
+        }
       }
 
     };
