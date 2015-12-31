@@ -25,18 +25,28 @@
         </tr>
         <tr>
           <td>
-            <span>Correct words</span>
+            <span>Word accuracy</span>
           </td>
           <td class="text-right">
-            <span ng-bind="testDetails.score.correct"></span>
+            <span ng-bind="calcAccuracy(testDetails.score.correct, testDetails.score.incorrect) + '%'"></span>
           </td>
         </tr>
         <tr>
           <td>
-            <span>Incorrect words</span>
+            <span>Key accuracy</span>
           </td>
           <td class="text-right">
-            <span ng-bind="testDetails.score.incorrect"></span>
+            <span ng-bind="calcAccuracy(testDetails.score.totalKeystrokes, testDetails.score.keystrokesIncorrect) + '%'"></span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span>XP earned</span>
+          </td>
+          <td class="text-right text-success">
+            <strong>
+              <span ng-bind="calcUserXp(testDetails.userWpm, testDetails.score.correct + testDetails.score.incorrect, testDetails.score.incorrect) + ' points!'"></span>
+            </strong>
           </td>
         </tr>
       </tbody>

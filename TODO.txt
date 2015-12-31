@@ -19,7 +19,8 @@ X add user stats tracking (backend)
 
 X add overall user stats
 
-- clean incoming word lists
+X clean incoming word lists
+X add experience points award upon test completion
 - add incorrect key tracking
 - add incorrect word tracking
 - add graphs for stats

@@ -141,16 +141,19 @@ module.exports = {
   saveTestRecord: function(req, res) {
     var username = req.body.username;
     var record = req.body.testRecord;
+    var userXp = req.body.userXp;
 
-    console.log('POST for saveTestRecord with username: ' + username + ' and record: ', record);
+    console.log('POST for saveTestRecord with username: ' + username,
+      'record: ', record, 'and userXp: ', userXp);
 
     User.findOne({
       username: username
     })
     .then(function(user) {
       if(user) {
-        // push the new test record to the db
+        // push the new test record to the db and add the xp to the user
         user.user_stats.test_records.push(record);
+        user.xp_points = user.xp_points + userXp;
         user.save()
         .then(function(user) {
           res.json(user.toObject());

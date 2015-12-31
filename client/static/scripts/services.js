@@ -17,8 +17,8 @@ zentypeServices.factory('WordApiService', ['$http',
   }]);
 
 
-zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$window', 'UserDetailService',
-  function ($http, $q, $interval, $window, UserDetailService) {
+zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$window', 'UserDetailService', 'UtilityService',
+  function ($http, $q, $interval, $window, UserDetailService, UtilityService) {
 
     var service = {
 
@@ -84,6 +84,8 @@ zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$windo
         if(UserDetailService.userData) {
           var td = this.testDetails;
 
+          var userXp = UtilityService.calcUserXp(td.userWpm, td.wordSet.length, td.score.incorrect);
+
           var testRecord = {
             date: Date.now(),
             wpm: td.userWpm,
@@ -98,7 +100,8 @@ zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$windo
             url: '/api/user/save-test',
             data: {
               username: UserDetailService.userData.username,
-              testRecord: testRecord
+              testRecord: testRecord,
+              userXp: userXp
             }
           })
           .then(function (res) {
@@ -451,6 +454,10 @@ zentypeServices.factory('UtilityService', [
       calcAccuracy: function(total, incorrect) {
         var correct = total - incorrect;
         return Math.round((correct / total) * 10000) / 100;
+      },
+      calcUserXp: function(wpm, totalWords, incorrect) {
+        var accuracy = (totalWords - incorrect) / totalWords;
+        return Math.round((accuracy * wpm) + totalWords);
       }
     };
 

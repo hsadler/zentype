@@ -113,7 +113,17 @@ zentypeDirectives.directive('ztScorescreen', [
 
       link: function(scope, elem, attrs) {},
 
-      controller: ['$scope', function($scope) {
+      controller: ['$scope', 'UtilityService',
+        function ($scope, UtilityService) {
+
+          console.log($scope.testDetails);
+
+          $scope.calcAccuracy = function (total, incorrect) {
+            return UtilityService.calcAccuracy(total, incorrect);
+          };
+          $scope.calcUserXp = function (wpm, totalWords, incorrect) {
+            return UtilityService.calcUserXp(wpm, totalWords, incorrect);
+          };
 
       }]
 
