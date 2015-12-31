@@ -24,3 +24,7 @@ X add experience points award upon test completion
 - add incorrect key tracking
 - add incorrect word tracking
 - add graphs for stats
+
+
+BUGS:
+- word accuracy is coming up negative sometimes
