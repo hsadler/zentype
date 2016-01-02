@@ -3,20 +3,6 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 var Promise = require('bluebird');
 
-
-// for characterRecords hash
-var charHash = (function() {
-  var hash = {};
-  var keyChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()-=_+[]{};\':",.<>/?\\|`~';
-  keyChars.split('').forEach(function(c) {
-    hash['char_' + c] = {
-      character: { type: String, default: c },
-      score: { type: Number, default: 0 }
-    };
-  });
-  return hash;
-})();
-
 // schema
 var UserSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
@@ -32,8 +18,10 @@ var UserSchema = new mongoose.Schema({
       total_keystrokes: { type: Number, required: true },
       keystrokes_incorrect: { type: Number, required: true }
     }],
-    character_records: charHash,
-    word_records: { default: {} },
+    // character hash for keeping track of missed key characters
+    character_records: { type: mongoose.Schema.Types.Mixed, default: {} },
+    // word hash for keeping track of missed words
+    word_records: { type: mongoose.Schema.Types.Mixed, default: {} },
     challenge_records: [{
       challenge_name: { type: String, required: true },
       unlock_date: { type: Date, default: Date.now },

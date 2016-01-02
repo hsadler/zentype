@@ -142,18 +142,46 @@ module.exports = {
     var username = req.body.username;
     var record = req.body.testRecord;
     var userXp = req.body.userXp;
+    var incorrectWords = req.body.incorrectWords;
+    var incorrectKeys = req.body.incorrectKeys;
 
-    console.log('POST for saveTestRecord with username: ' + username,
-      'record: ', record, 'and userXp: ', userXp);
+    console.log(
+      'POST for saveTestRecord with username: ' + username,
+      'record: ', record,
+      'userXp: ', userXp,
+      'incorrectWords: ', incorrectWords,
+      'incorrectKeys: ', incorrectKeys
+    );
 
     User.findOne({
       username: username
     })
     .then(function(user) {
       if(user) {
-        // push the new test record to the db and add the xp to the user
+        console.log('user before: ', user);
+        // push the new test record to the user's records in the db
         user.user_stats.test_records.push(record);
+        // add the xp earned for the test
         user.xp_points = user.xp_points + userXp;
+        // add incorrect words tallies
+        for(var word in incorrectWords) {
+          if(user.user_stats.word_records[word] === undefined) {
+            user.user_stats.word_records[word] = { word: word, incorrect_count: 1 };
+          } else {
+            user.user_stats.word_records[word].incorrect_count += 1;
+          }
+        }
+        user.markModified('user_stats.word_records');
+        // add incorrect key tallies
+        for(var key in incorrectKeys) {
+          if(user.user_stats.character_records['char_' + key] === undefined) {
+            user.user_stats.character_records['char_' + key] = { character: key, incorrect_count: 1 };
+          } else {
+            user.user_stats.character_records['char_' + key].incorrect_count += 1;
+          }
+        }
+        user.markModified('user_stats.character_records');
+        console.log('user after: ', user);
         user.save()
         .then(function(user) {
           res.json(user.toObject());

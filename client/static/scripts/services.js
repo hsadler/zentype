@@ -41,6 +41,8 @@ zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$windo
           keystrokesIncorrect: 0
         };
         this.testDetails.userWpm = null;
+        this.testDetails.incorrectWords = {};
+        this.testDetails.incorrectKeys = {};
         this.testDetails.speedtestComplete = false;
         this.getWords(1, 100, 60)
         .then(function () {
@@ -84,7 +86,10 @@ zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$windo
         if(UserDetailService.userData) {
           var td = this.testDetails;
 
+          // to be sent along with the test record
           var userXp = UtilityService.calcUserXp(td.userWpm, td.wordSet.length, td.score.incorrect);
+          var incorrectWords = td.incorrectWords;
+          var incorrectKeys = td.incorrectKeys;
 
           var testRecord = {
             date: Date.now(),
@@ -101,7 +106,9 @@ zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$windo
             data: {
               username: UserDetailService.userData.username,
               testRecord: testRecord,
-              userXp: userXp
+              userXp: userXp,
+              incorrectWords: incorrectWords,
+              incorrectKeys: incorrectKeys
             }
           })
           .then(function (res) {
@@ -109,6 +116,24 @@ zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$windo
           }, function (err) {
             console.log('ERROR: ', err);
           });
+        }
+      },
+
+      addIncorrectWord: function(word) {
+        dict = this.testDetails.incorrectWords;
+        if(dict[word] === undefined) {
+          dict[word] = 1;
+        } else {
+          dict[word] = dict[word] + 1;
+        }
+      },
+
+      addIncorrectKey: function(key) {
+        dict = this.testDetails.incorrectKeys;
+        if(dict[key] === undefined) {
+          dict[key] = 1;
+        } else {
+          dict[key] = dict[key] + 1;
         }
       },
 
@@ -139,6 +164,8 @@ zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$windo
             (event.keyCode !== 32 || event.keyCode !== 8)
           ) {
             td.score.keystrokesIncorrect += 1;
+            // increment the incorrect letter in the dictionary
+            service.addIncorrectKey(currWordFromSet[currWordIndex]);
           }
 
           // if last letter of last word is correct, stop the test and calc results
@@ -160,6 +187,8 @@ zentypeServices.factory('SpeedtestService', ['$http', '$q', '$interval', '$windo
             } else {
               td.wordSet[td.wordSetIndex].correct = false;
               td.score.incorrect += 1;
+              // add wrong word to the wrong word dictionary
+              service.addIncorrectWord(td.wordSet[td.wordSetIndex].word);
             }
             td.wordSetIndex += 1;
             td.calculateWpm();
