@@ -138,7 +138,7 @@ zentypeControllers.controller('UserDashboardCtrl', ['$scope', '$location', 'Auth
       $location.path('/login');
     };
 
-    // for getting user averages
+    // for getting user stat averages
     $scope.userLevel = function() { return UserDetailService.userLevel(); };
     $scope.userWpm = function() { return UserDetailService.userWpm(); };
     $scope.userTotalTests = function() { return UserDetailService.userTotalTests(); };
@@ -146,6 +146,14 @@ zentypeControllers.controller('UserDashboardCtrl', ['$scope', '$location', 'Auth
     $scope.userTotalKeystrokes = function() { return UserDetailService.userTotalKeystrokes(); };
     $scope.userWordAccuracy = function() { return UserDetailService.userWordAccuracy(); };
     $scope.userKeystrokeAccuracy = function() { return UserDetailService.userKeystrokeAccuracy(); };
+
+    // top 5 missed words and keys
+    $scope.getTopFiveMissedWords = function() {
+      return _.sortBy($scope.user.user_stats.word_records, 'incorrect_count').reverse();
+    };
+    $scope.getTopFiveMissedKeys = function() {
+      return _.sortBy($scope.user.user_stats.character_records, 'incorrect_count').reverse();
+    };
 
     // utility functions
     $scope.calcAccuracy = function(total, incorrect) {

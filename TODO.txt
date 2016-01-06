@@ -21,8 +21,8 @@ X add overall user stats
 
 X clean incoming word lists
 X add experience points award upon test completion
-- add incorrect key tracking
-- add incorrect word tracking
+X add incorrect key tracking
+X add incorrect word tracking
 - add graphs for stats
 
 
