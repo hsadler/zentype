@@ -132,8 +132,8 @@ zentypeDirectives.directive('ztScorescreen', [
 ///////////////// D3 DIRECTIVES ////////////////////////
 
 // dashboard wpm directive
-zentypeDirectives.directive('ztWpmGraph', [
-  function() {
+zentypeDirectives.directive('ztWpmGraph', ['$window',
+  function($window) {
     return {
       scope: { //own scope
         testDetails: '=',
@@ -143,12 +143,58 @@ zentypeDirectives.directive('ztWpmGraph', [
       replace: true,
       templateUrl: '../templates/zt-wpm-graph.html',
 
-      link: function(scope, elem, attrs) {},
+      link: function(scope, elem, attrs) {
 
-      controller: ['$scope', 'UtilityService',
-        function ($scope, UtilityService) {
+        console.log('link method has been run...');
+
+        var w = angular.element($window);
+
+        scope.getGraphSpaceWidth = function() {
+          return elem[0].offsetWidth;
+        };
+
+        scope.renderGraph(scope.getGraphSpaceWidth());
+
+        scope.$watch(scope.getGraphSpaceWidth, function(newVal, oldVal) {
+          scope.updateGraphWidth(newVal);
+        }, true);
+
+        w.bind('resize', function () {
+          scope.$apply();
+        });
+
+      },
+
+      controller: ['$scope', 'UserDetailService', 'UtilityService',
+        function ($scope, UserDetailService, UtilityService) {
 
           console.log('the wpm graph has attached...');
+
+          var vis = d3.select('#wpm-graph');
+
+          $scope.renderGraph = function(width) {
+            var testRecords = UserDetailService.userData.user_stats.test_records;
+            var graphData = [];
+
+            testRecords.forEach(function(item, i) {
+              graphData.push({ pos: i, wpm: item.wpm });
+            });
+
+            vis.data(graphData)
+              .append('svg')
+              .style('height', 300)
+              .style('width', width)
+              .style('background-color', '#1c1e22')
+              .attr('viewBox', '0 0 ' + width + ' 300')
+              .attr('perserveAspectRatio', 'xMinYMid');
+
+            console.log('vis', vis);
+          };
+
+          $scope.updateGraphWidth = function(width) {
+            vis.select('svg')
+              .style('width', width);
+          };
 
       }]
 
