@@ -2,7 +2,7 @@
 
 /*for testing*/
 * {
-  /*border: 1px dotted green;*/
+  border: 1px dotted green;
 }
 
 
@@ -88,6 +88,9 @@ table.dashboard-stats tbody tr td {
   /*font-size: 16px;*/
   padding-left: 14px;
   padding-right: 14px;
+}
+#wpm-graph {
+  padding: 0;
 }
 
 

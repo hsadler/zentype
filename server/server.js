@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 
 var app = express();
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 require('./routes/routes')(app, express);
 
@@ -33,10 +33,6 @@ app.get('/', function(req, res) {
 });
 
 
-if (require.main === module) {
-  app.listen(port);
-  console.log('listening on ' + port);
+app.listen(port, function() {
   console.log('app listening on port: ' + port + ' in ' + node_env + ' mode.');
-}
-
-exports = module.exports = app;
+});

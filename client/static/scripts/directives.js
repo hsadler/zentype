@@ -38,8 +38,6 @@ zentypeDirectives.directive('preventTab', [
 
 
 ///////////////// SPEEDTEST DIRECTIVES ////////////////////////
-///
-/// these are the new directives for the standard speedtest
 
 // loadingscreen component directive
 zentypeDirectives.directive('ztLoadingscreen', [
@@ -130,6 +128,43 @@ zentypeDirectives.directive('ztScorescreen', [
     };
   }]);
 
+
+///////////////// D3 DIRECTIVES ////////////////////////
+
+// dashboard wpm directive
+zentypeDirectives.directive('ztWpmGraph', [
+  function() {
+    return {
+      scope: { //own scope
+        testDetails: '=',
+        navigation: '='
+      },
+      restrict: 'E', //can only be an element
+      replace: true,
+      templateUrl: '../templates/zt-wpm-graph.html',
+
+      link: function(scope, elem, attrs) {},
+
+      controller: ['$scope', 'UtilityService',
+        function ($scope, UtilityService) {
+
+          console.log('the wpm graph has attached...');
+
+      }]
+
+    };
+  }]);
+
+
+
+
+
+
+
+
+
+
+//             <==== OLD CODE BELOW ====>                    //
 
 ///////////////// CHALLENGE DIRECTIVES ////////////////////////
 
