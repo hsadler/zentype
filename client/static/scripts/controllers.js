@@ -149,10 +149,14 @@ zentypeControllers.controller('UserDashboardCtrl', ['$scope', '$location', 'Auth
 
     // top 5 missed words and keys
     $scope.getTopFiveMissedWords = function() {
-      return _.sortBy($scope.user.user_stats.word_records, 'incorrect_count').reverse();
+      if($scope.user) {
+        return _.sortBy($scope.user.user_stats.word_records, 'incorrect_count').reverse();
+      }
     };
     $scope.getTopFiveMissedKeys = function() {
-      return _.sortBy($scope.user.user_stats.character_records, 'incorrect_count').reverse();
+      if($scope.user) {
+        return _.sortBy($scope.user.user_stats.character_records, 'incorrect_count').reverse();
+      }
     };
 
     // utility functions

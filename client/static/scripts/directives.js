@@ -145,21 +145,75 @@ zentypeDirectives.directive('ztWpmGraph', ['$window',
 
       link: function(scope, elem, attrs) {
 
-        console.log('link method has been run...');
-
+        // save the window to a jquery lite object
         var w = angular.element($window);
 
-        scope.getGraphSpaceWidth = function() {
+        // save reference to d3 svg selection
+        var svg = d3.select('#wpm-graph');
+
+        // our render graph function
+        var renderGraph = function() {
+
+          var data = scope.getGraphData();
+          console.log('graph data: ', data);
+
+          var wpmUpperBound = _.max(data);
+          var wpmLowerBound = _.min(data);
+
+          var graphSize = {
+            height: 300,
+            width: elem[0].offsetWidth,
+          };
+
+          var viewportSize = {
+            height: 400,
+            width: graphSize.width * 2
+          };
+
+          var calcWpmY = function(wpm) {
+            var yRatio = (wpm - wpmLowerBound) / (wpmUpperBound - wpmLowerBound);
+            return viewportSize.height - (yRatio * viewportSize.height);
+          };
+
+          svg.attr('height', graphSize.height)
+            .attr('width', graphSize.width)
+            .attr('viewBox', '0 0 ' + viewportSize.width + ' ' + viewportSize.height)
+            .attr('perserveAspectRatio', 'xMidYMid meet');
+
+          var circle = svg.selectAll('circle')
+            .data(data);
+
+          circle.enter().append('circle')
+            .attr("cy", function(d) {
+              return calcWpmY(d);
+            })
+            .attr("cx", function(d, i) {
+              return Math.round((i / (data.length - 1)) * viewportSize.width);
+            })
+            .attr("r", parseInt(graphSize.width / 100))
+            .attr('fill', 'red');
+
+          circle.exit().remove();
+        };
+
+        // render the graph on load
+        renderGraph();
+
+        var updateGraphWidth = function(width) {
+          svg.attr('width', width);
+        };
+
+        var getGraphWidth = function() {
           return elem[0].offsetWidth;
         };
 
-        scope.renderGraph(scope.getGraphSpaceWidth());
-
-        scope.$watch(scope.getGraphSpaceWidth, function(newVal, oldVal) {
-          scope.updateGraphWidth(newVal);
+        // watch width change of window and change width of graph accordingly
+        scope.$watch(getGraphWidth, function(newVal, oldVal) {
+          updateGraphWidth(newVal);
         }, true);
 
         w.bind('resize', function () {
+          console.log('window resized...');
           scope.$apply();
         });
 
@@ -168,32 +222,11 @@ zentypeDirectives.directive('ztWpmGraph', ['$window',
       controller: ['$scope', 'UserDetailService', 'UtilityService',
         function ($scope, UserDetailService, UtilityService) {
 
-          console.log('the wpm graph has attached...');
-
-          var vis = d3.select('#wpm-graph');
-
-          $scope.renderGraph = function(width) {
+          $scope.getGraphData = function() {
             var testRecords = UserDetailService.userData.user_stats.test_records;
-            var graphData = [];
-
-            testRecords.forEach(function(item, i) {
-              graphData.push({ pos: i, wpm: item.wpm });
+            return testRecords.map(function(item, i) {
+              return item.wpm;
             });
-
-            vis.data(graphData)
-              .append('svg')
-              .style('height', 300)
-              .style('width', width)
-              .style('background-color', '#1c1e22')
-              .attr('viewBox', '0 0 ' + width + ' 300')
-              .attr('perserveAspectRatio', 'xMinYMid');
-
-            console.log('vis', vis);
-          };
-
-          $scope.updateGraphWidth = function(width) {
-            vis.select('svg')
-              .style('width', width);
           };
 
       }]

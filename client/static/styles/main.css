@@ -2,7 +2,7 @@
 
 /*for testing*/
 * {
-  border: 1px dotted green;
+  /*border: 1px dotted green;*/
 }
 
 
@@ -91,6 +91,7 @@ table.dashboard-stats tbody tr td {
 }
 #wpm-graph {
   padding: 0;
+  background-color: #1c1e22;
 }
 
 
