@@ -160,26 +160,45 @@ zentypeDirectives.directive('ztWpmGraph', ['$window',
           var wpmUpperBound = _.max(data);
           var wpmLowerBound = _.min(data);
 
+          // graph dimentions
           var graphSize = {
             height: 300,
             width: elem[0].offsetWidth,
           };
-
           var viewportSize = {
             height: 400,
             width: graphSize.width * 2
           };
 
+          // functions to get point coordinates for each data item
           var calcWpmY = function(wpm) {
             var yRatio = (wpm - wpmLowerBound) / (wpmUpperBound - wpmLowerBound);
             return viewportSize.height - (yRatio * viewportSize.height);
           };
+          var calcWpmX = function(i) {
+            return Math.round((i / (data.length - 1)) * viewportSize.width);
+          };
 
+          // set svg attrs
           svg.attr('height', graphSize.height)
             .attr('width', graphSize.width)
             .attr('viewBox', '0 0 ' + viewportSize.width + ' ' + viewportSize.height)
             .attr('perserveAspectRatio', 'xMidYMid meet');
 
+          // d3 line interpreter function
+          var calcPathLine = d3.svg.line()
+            .x(function(d, i) { return calcWpmX(i); })
+            .y(function(d) { return calcWpmY(d); })
+            .interpolate('linear');
+
+          // draw the path
+          svg.append('path')
+            .attr("d", calcPathLine(data))
+            .attr("stroke", "steelblue")
+            .attr("stroke-width", 2)
+            .attr("fill", "none");
+
+          // draw the circles
           var circle = svg.selectAll('circle')
             .data(data);
 
@@ -188,12 +207,14 @@ zentypeDirectives.directive('ztWpmGraph', ['$window',
               return calcWpmY(d);
             })
             .attr("cx", function(d, i) {
-              return Math.round((i / (data.length - 1)) * viewportSize.width);
+              return calcWpmX(i);
             })
-            .attr("r", parseInt(graphSize.width / 100))
+            .attr("r", parseInt(graphSize.width / 90))
             .attr('fill', 'red');
 
           circle.exit().remove();
+
+
         };
 
         // render the graph on load
