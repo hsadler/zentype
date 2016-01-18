@@ -4,6 +4,7 @@
   "description": "Exercises to become a better typist",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/server.js",
     "nodemon": "nodemon server/server.js"
   },
   "keywords": [],
