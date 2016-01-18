@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/server.js",
     "nodemon": "nodemon server/server.js",
-    "postinstall": "npm run bower install"
+    "bower": "npm run bower install",
+    "rebuild": "bower install"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +17,7 @@
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.0.6",
     "body-parser": "^1.14.1",
+    "bower": "^1.7.2",
     "express": "^4.13.3",
     "jwt-simple": "^0.4.0",
     "kerberos": "0.0.17",
