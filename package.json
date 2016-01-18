@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/server.js",
-    "nodemon": "nodemon server/server.js"
+    "nodemon": "nodemon server/server.js",
+    "postinstall": "npm run bower install"
   },
   "keywords": [],
   "author": "",
