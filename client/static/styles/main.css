@@ -85,7 +85,6 @@ a.dashboard-logout-link:hover, a.dashboard-logout-link:focus {
   cursor: pointer;
 }
 table.dashboard-stats tbody tr td {
-  /*font-size: 16px;*/
   padding-left: 14px;
   padding-right: 14px;
 }

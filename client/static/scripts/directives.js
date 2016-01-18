@@ -155,7 +155,6 @@ zentypeDirectives.directive('ztWpmGraph', ['$window',
         var renderGraph = function() {
 
           var data = scope.getGraphData();
-          console.log('graph data: ', data);
 
           var wpmUpperBound = _.max(data);
           var wpmLowerBound = _.min(data);
@@ -214,7 +213,6 @@ zentypeDirectives.directive('ztWpmGraph', ['$window',
 
           circle.exit().remove();
 
-
         };
 
         // render the graph on load
@@ -234,7 +232,6 @@ zentypeDirectives.directive('ztWpmGraph', ['$window',
         }, true);
 
         w.bind('resize', function () {
-          console.log('window resized...');
           scope.$apply();
         });
 
