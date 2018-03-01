@@ -1,6 +1,6 @@
-# ZenType
+# [ZenType](http://zentype.herokuapp.com/#/)
 
-> Exercises to become a better typist [here](http://zentype.herokuapp.com/#/)
+> Exercises to become a better typist
 
 ## Requirements
 
