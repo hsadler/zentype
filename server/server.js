@@ -16,11 +16,11 @@ var node_env = process.env.NODE_ENV || 'development';
 // MongoDB connection
 mongoURI = process.env.MONGOLAB_URI || 'mongodb://localhost/ZenType';
 
-mongoose.connect(mongoURI);
+mongoose.connect(mongoURI, {useNewUrlParser: true});
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function (callback) {
+db.once('open', function () {
   console.log('db success');
 });
 
