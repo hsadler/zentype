@@ -1,3 +1,6 @@
+
+- fix deployment
+
 XXX add scorescreen to speedtest
 X add MongoDB
 X add user schema
